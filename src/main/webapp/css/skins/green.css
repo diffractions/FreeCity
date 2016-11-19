@@ -1,0 +1,74 @@
+/* ====================================================
+
+	File Name: Green Theme (green-theme.css)
+	Description: Green theme for Canvas
+	Author: Donny Burnside
+	Author URI: http://www.donnyburnside.co.uk
+	Version: 1.0.0
+	License: GNU General Public License v3.0
+	License URI: http://www.gnu.org/licenses/gpl.html
+
+	Canvas - A Free Website Template by Donny Burnside
+	Copyright 2015 Donny Burnside
+	Distributed under the terms of the GNU GPL
+
+	For help and support please visit http://www.donnyburnside.co.uk
+
+   ==================================================== */
+
+/* ====================================================
+	Accent Colour (Links, buttons, borders, etc)
+   ==================================================== */
+
+/* Colour */
+a, .post .entry-title, .author-name, .posts-by-author-title {
+	color: #76E292;
+}
+
+/* Background Colour */
+#masthead, #isotope-menu, .isotope-item a .overlay,
+	.project-description-title:after, .project-details-title:after, button,
+	.button, input[type="submit"], input[type="reset"], input[type="cancel"],
+	::selection {
+	background-color: #76E292;
+}
+
+/* Borders */
+#prefooter {
+	border-color: #76E292;
+}
+
+ul.vertical-navigation, ul.vertical-navigation-right {
+	background: #229940;
+	background: rgba(34, 153, 64, 0.90);
+}
+
+.tags a {
+	display: inline-block;
+	font-size: 14px;
+	font-family: "Open Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
+	padding: 2px 4px;
+	text-align: left;
+	background: #76E292;
+	color: #fff;
+	margin-bottom: 5px;
+	margin-right: 5px;
+	transition: all 1.3s ease 0s;
+	-moz-transition: all 1.0s ease 0s;
+	-webkit-transition: all 1.0s ease 0s;
+	-o-transition: all 1.0s ease 0s;
+	-ms-transition: all 1.0s ease 0s;
+}
+
+.tags a:hover {
+	background: #229940;
+	color: #fff
+}
+
+#view-toggle-wrapper  .viewer-toggle-nav .horizontal-navigation li a {
+	color: #CCC ;
+}
+
+#view-toggle-wrapper  .viewer-toggle-nav .horizontal-navigation li a:hover { 
+	color: #000;
+}

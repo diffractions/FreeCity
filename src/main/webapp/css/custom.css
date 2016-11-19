@@ -1,0 +1,428 @@
+/* ====================================================
+
+	File Name: Custom CSS (custom.css)
+	Description: Custom CSS
+	Author: Donny Burnside
+	Author URI: http://www.donnyburnside.co.uk
+	Version: 1.0.0
+	License: GNU General Public License v3.0
+	License URI: http://www.gnu.org/licenses/gpl.html
+
+	Canvas - A Free Website Template by Donny Burnside
+	Copyright 2015 Donny Burnside
+	Distributed under the terms of the GNU GPL
+
+	For help and support please visit http://www.donnyburnside.co.uk
+
+   ==================================================== */
+
+/* ====================================================
+	Add your custom CSS below
+   ==================================================== */
+
+/* ====================================================
+	drop menu
+   ==================================================== */
+ul.vertical-navigation, ul.vertical-navigation-right {
+	display: none;
+	clear: both;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	position: absolute;
+	background: rgb(0, 0, 0);
+	background: rgba(0, 0, 0, 0.35);
+	z-index: 1;
+	list-style: none;
+}
+
+ul.vertical-navigation:before, ul.vertical-navigation:after, ul.vertical-navigation-right:before,
+	ul.vertical-navigation:after {
+	content: "";
+	display: table;
+}
+
+ul.vertical-navigation:after, ul.vertical-navigation-right:after {
+	clear: both;
+}
+
+ul.vertical-navigation>li, ul.vertical-navigation-right>li {
+	position: relative;
+}
+
+ul.vertical-navigation>li>a:hover, ul.vertical-navigation-right>li>a:hover
+	{
+	background: rgb(0, 0, 0);
+	background: rgba(0, 0, 0, 0.35);
+}
+
+ul.vertical-navigation>li>a, ul.vertical-navigation-right>li>a {
+	display: block;
+	padding: 8px 16px;
+	padding: 0.5rem 1rem;
+	font-family: "Open Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	font-size: 1.25rem;
+	font-weight: 300;
+}
+
+ul.vertical-navigation>li.active, ul.vertical-navigation-right>li.active
+	{
+	
+}
+
+ul.vertical-navigation>li.active a, ul.vertical-navigation-right>li.active a
+	{
+	background: rgb(255, 255, 255);
+	background: rgba(255, 255, 255, 0.25);
+}
+
+ul.vertical-navigation-right {
+	display: none;
+	position: absolute;
+	right: 100%;
+	top: 0%;
+}
+
+ul.vertical-navigation>li:hover ul.vertical-navigation-right {
+	display: block;
+}
+
+ul.horizontal-navigation>li.active>ul>li:hover {
+	background: rgba(255, 255, 255, 0.25);
+}
+
+@media screen and ( min-width : 1010px) {
+	ul.horizontal-navigation>li:hover  ul.vertical-navigation {
+		display: block;
+	}
+}
+
+@media screen and (max-width: 1010px) {
+	ul.horizontal-navigation>li.menu-home-not:hover  ul.vertical-navigation
+		{
+		display: block;
+	}
+	ul.w3-show {
+		display: block;
+	}
+}
+
+/* ====================================================
+	img
+   ==================================================== */
+.img {
+	height: 240px;
+	overflow: hidden;
+	position: relative;
+	border: 1px solid #ffffff;
+	opacity: 0.9;
+	-webkit-filter: blur(1px);
+	filter: blur(1px);
+	background-size: 15%;
+	background-origin: padding-box;
+}
+
+.img_one {
+	border: 1px solid #ffffff;
+	background-size: 15%;
+	background-origin: padding-box;
+}
+
+/* ====================================================
+	map
+   ==================================================== */
+#floating-panel {
+	color: #ff8040;
+}
+
+/* ====================================================
+	show all map list
+   ==================================================== */
+.entry-meta-map-list {
+	margin-bottom: 0;
+	margin-bottom: 0;
+	padding: 8px;
+	padding: 0.5rem;
+	font-size: 12px;
+	font-size: 0.75rem;
+	color: #999;
+	background: #f7f7f7;
+	border: 1px solid #e2e2e2;
+}
+ 
+.pagination {
+	margin-top: 16px;
+	margin-top: 1rem;
+}
+
+/* ====================================================
+	tabs menu
+   ==================================================== */
+ul.tab {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	background-color: #f1f1f1;
+}
+
+/* Float the list items side by side */
+ul.tab li {
+	float: left;
+}
+
+/* Style the links inside the list items */
+ul.tab li a {
+	display: inline-block;
+	color: black;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	transition: 0.3s;
+	font-size: 17px;
+}
+
+/* Change background color of links on hover */
+ul.tab li a:hover {
+	background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+ul.tab li a:focus, a.active {
+	background-color: rgba(81, 81, 81, 0.7);
+/* 	background-color: #ccc; */
+}
+
+/* Style the tab content */
+.tabcontent {
+	display: none;
+	/* 	padding: 6px 12px; */
+	border: 1px solid #ccc;
+	border-top: none;
+}
+
+.tabs {
+	border: none;
+}
+
+/* ==================================================== 
+/* === ALERT BOX & SUCCESS */
+/* ====================================================*/
+div.box {
+	font-size: 108.3%;
+	margin: 2px 0 15px;
+	padding: 20px 15px 20px 65px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	/*behavior:url(http://www.yourinspirationweb.com/tf/bolder/wp-content/themes/bolder/PIE.htc);*/
+}
+
+div.success-box {
+	background: url("message/check.png") no-repeat 15px center #ebfab6;
+	border: 1px solid #bbcc5b;
+	color: #599847;
+}
+
+div.arrow-box {
+	background: url("message/arrow.png") no-repeat 15px center #ebfab6;
+	border: 1px solid #bbcc5b;
+	color: #599847;
+}
+
+div.alert-box {
+	background: url("message/alert.png") no-repeat 15px center #fbdd96;
+	border: 1px solid #e5af51;
+	color: #ca6b1c;
+}
+
+div.error-box {
+	background: url("message/error.png") no-repeat 15px center #fdd2d1;
+	border: 1px solid #f6988f;
+	color: #883333;
+}
+
+div.notice-box {
+	background: url("message/note.png") no-repeat 15px center #f9ebca;
+	border: 1px solid #e5b2ac;
+	color: #9f6722;
+}
+
+div.info-box {
+	background: url("message/info.png") no-repeat 15px center #e6ebf0;
+	border: 1px solid #89becd;
+	color: #277dce;
+}
+
+
+
+
+/*============================================*/
+/*list / map menu*/
+/*============================================*/
+
+#view-toggle-wrapper {
+	width: 100%;
+	height:auto; 
+	padding: 8px;
+	padding: 0.5rem;
+	background-color: rgba(81, 81, 81, 0.7);
+			margin:0 0 24px;
+		margin:0 0 1.5rem;
+}
+
+.viewer-toggle-nav {
+	
+/* 	margin-right: 15px; */
+	font-weight: 500;
+	float: right;
+	padding-right: 20px;
+	display: inline-block; 
+	margin-bottom: 16px;
+	margin-bottom: 1rem;
+/* 	padding-top: 4px; */
+	color: #CCC !important;
+	font-size: 16px;
+}
+
+#view-toggle-wrapper .viewer-toggle-nav ul.horizontal-navigation>li { 
+	padding: 0 4px;
+	padding: 0 0.25rem;
+}
+
+#view-toggle-wrapper .viewer-toggle-nav ul.horizontal-navigation>li>a {
+	height: 34px;
+	height: 2rem;
+}
+
+#counter {
+	border: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+	width: 200px;
+/* 	float: left; */
+	color: #CCC !important;
+	margin-left: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+/* 	background-image: url("!b.png"); */
+/* 	background-image: url("greyzz.png"); */
+/* 	background-image: url("pw_maze_white.png"); */
+/* 	background-image: url("debut_light.png"); */
+/* 	background-image: url("cream_dust.png"); */
+/* 	background-image: url("shattered.png"); */
+/* 	background-image: url("swirl.png"); */
+/* 	background-image: url("ice_age_@2X.png"); */
+/* 	background-image: url("pyramid.png"); */
+/* 	background-image: url("!candyhole.png"); */
+/* 	background-image: url("!whitediamond.png"); */
+/* 	background-image: url("cubes.png"); */
+/* 	background-image: url("fancy_deboss.png"); */
+	background-image: url("!!gplaypattern.png");
+/* 	background-image: url("grilled.png"); */
+/* 	background-image: url("little_triangles.png"); */
+/* 	background-image: url("polonez_car.png"); */
+/* 	background-image: url("px_by_Gre3g.png"); */
+/* 	background-image: url("rubber_grip.png"); */
+/* 	background-image: url("square_bg.png"); */
+/* 	background-image: url("stacked_circles.png"); */
+//	background: #f6f4f2;
+}
+
+
+
+ .post {
+ 	margin-bottom: 32px;
+ 	margin-bottom: 2rem;
+	padding: 12px;
+	background: #f7f7f7;
+	color: #999;
+	border: 1px solid #e2e2e2;
+//	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.06) inset;
+//	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.06) inset;
+// 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.06) inset;
+
+ }
+
+.post .entry-content{
+ 	margin-bottom: 8px;
+ 	margin-bottom: 0.5rem;
+}
+
+.post .entry-title{
+	margin-top: 8px;
+ 	margin-top: 0.5rem;
+}
+
+
+
+
+
+.tooltip {
+    position: relative;
+    display: inline-block; 
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 250px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 40%;
+    margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+
+#page-title {
+	    min-height: 200px;
+ background-attachment: fixed; 
+ background-position: center; 
+    background-repeat: no-repeat;
+    background-size: cover; 
+}
+
+ .scrollup {
+   width: 72px;
+   height: 72px;
+   opacity: 0.3;
+   position: fixed;
+   bottom: 50px;
+   right: 70px;
+   display: none;
+   text-indent: -9999px;
+   background: url('icon_top.png') no-repeat;
+   z-index: 5;
+ }
+ 

@@ -1,0 +1,3 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%><%@ page import="entity.ShowedItem"%><%@ page import="entity.ShowedUser"%><%@ page import="entity.City"%><%@ page import="entity.Section"%><%@ page import="java.util.Calendar"%><c:if
+	test="${not empty item.getSections() && item.getSections().get(0).getSectionView()!=9}">${pageContext.request.contextPath}/${item.getCities().get(0).getShortName()}/entity?id=${item.getId()}</c:if><c:if
+	test="${not empty item.getSections() && item.getSections().get(0).getSectionView()==9}">${pageContext.request.contextPath}/${item.getCities().get(0).getShortName()}/list?city=${item.getCities().get(0).getId()}&section=${item.getSections().get(0).getSectionId()-1}</c:if>

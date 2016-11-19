@@ -1,0 +1,1 @@
+${pageContext.request.contextPath}<c:if test="${not empty city_selected}">/${city_selected.getShortName()}</c:if>/
