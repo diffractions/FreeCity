@@ -76,15 +76,22 @@ public class RequestListener implements ServletRequestListener, ServletRequestAt
     public void requestInitialized(ServletRequestEvent sre)  { 
 
 		HttpServletRequest arg0 = (HttpServletRequest) sre.getServletRequest();
-		log.debug("New request"
-				+ " --> Addr: "
-				+ arg0.getRemoteAddr() + " --> Host : "
-				+ arg0.getRemoteHost() + " --> Port : "
-				+ arg0.getRemotePort() + " --> User : "
-				+ arg0.getRemoteUser() + " --> auth : " + arg0.getAuthType()
-				+ " --> PathInfo : " + arg0.getPathInfo()
-				+ " --> ServerName : " + arg0.getServerName());
+//		log.debug("New request"
+//				+ " --> Addr: "
+//				+ arg0.getRemoteAddr() + " --> Host : "
+//				+ arg0.getRemoteHost() + " --> Port : "
+//				+ arg0.getRemotePort() + " --> User : "
+//				+ arg0.getRemoteUser() + " --> auth : " + arg0.getAuthType()
+//				+ " --> PathInfo : " + arg0.getPathInfo()
+//				+ " --> ServerName : " + arg0.getServerName());
 
+		
+		log.info("Request from"
+				+ " --> Addr: " + arg0.getRemoteAddr() 
+				+ " --> Host : "+ arg0.getRemoteHost() 
+				+ " --> requ : " + arg0.getRequestURL());
+		
+		
 		StringBuilder sb = new StringBuilder("Reqest Header");
 		Enumeration<String> names = arg0.getHeaderNames();
 		while (names.hasMoreElements()) {

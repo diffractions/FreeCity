@@ -4,6 +4,7 @@ import static utils.JBDCUtil.closeQuaetly;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,6 +25,8 @@ import dao.exceptions.DaoSystemException;
 import dao.exceptions.NoSuchEntityException;
 import entity.Img;
 import entity.impl.SimpleImgImpl;
+
+import utils.EncodeUtils;
 
 public class SimpleImgDaoImpl implements ImgDao {
 
@@ -101,7 +104,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		PreparedStatement stat1 = null;
 
 		try {
-			fileName = getFileName(filePart);
+			fileName =  getFileName(filePart); 
 			if (fileName != null && !fileName.equals("")) {
 				// prints out some information for debugging
 				log.info("user add phohto : " + filePart.getName() + ", " + filePart.getSize() + ", "
@@ -238,8 +241,10 @@ public class SimpleImgDaoImpl implements ImgDao {
 		}
 	}
 
-	private String getFileName(final Part part) {
-		for (String content : part.getHeader("content-disposition").split(";")) {
+	private String getFileName(final Part part) throws UnsupportedEncodingException {
+ 
+		log.trace(new String(part.getHeader("content-disposition")));
+		for (String content : new String(part.getHeader("content-disposition")).split(";")) {
 			if (content.trim().startsWith("filename")) {
 				return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
 			}
@@ -293,22 +298,24 @@ public class SimpleImgDaoImpl implements ImgDao {
 
 		try {
 
-			// prints out some information for debugging
-			log.info("user upd phohto : " + filePart.getName() + ", " + filePart.getSize() + ", "
-					+ filePart.getContentType());
-			InputStream inputStream = filePart.getInputStream();
+			if (filePart.getSize()>0 ) {
+				// prints out some information for debugging
+				log.info("user upd phohto : " + filePart.getName() + ", " + filePart.getSize() + ", "
+						+ filePart.getContentType());
+				InputStream inputStream = filePart.getInputStream();
 
-			con = dataSource.getConnection();
-			stat = con.prepareStatement(SQL_UPD_IMG_HEADER_LIST);
-			stat.setBlob(1, inputStream);
-			stat.setString(2, getFileName(filePart));
-			stat.setString(3, filePart.getContentType());
-			stat.setInt(4, entityId);
-			int row =	stat.executeUpdate();
+				con = dataSource.getConnection();
+				stat = con.prepareStatement(SQL_UPD_IMG_HEADER_LIST);
+				stat.setBlob(1, inputStream);
+				stat.setString(2, getFileName(filePart));
+				stat.setString(3, filePart.getContentType());
+				stat.setInt(4, entityId);
+				int row = stat.executeUpdate();
 
-			log.debug("UPDATET ROWS AFTER UPD IMG " + row);
-			if(row==0){
-				 addImg(entityId, filePart);
+				log.debug("UPDATET ROWS AFTER UPD IMG " + row);
+				if (row == 0) {
+					addImg(entityId, filePart);
+				}
 			}
 		} catch (SQLException e) {
 			log.error("Error description", e);

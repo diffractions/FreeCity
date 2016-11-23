@@ -39,7 +39,9 @@ public interface ShowedItem {
 	public List<String> getImages();
 	
 	public String getImagName();
-	
+
 	public int getActiv();
+	
+	public int getStatus();
 
 }

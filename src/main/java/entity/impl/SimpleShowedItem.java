@@ -35,6 +35,7 @@ public class SimpleShowedItem implements ShowedItem {
 	private Rating rating;
 	private List<String> images;
 	private int activ;
+	private int status;
 
 	@Override
 	public List<Map> getMaps() {
@@ -110,7 +111,7 @@ public class SimpleShowedItem implements ShowedItem {
 		this.image = image;
 	}
 	
-	public SimpleShowedItem(int entity_id, String header, String description, String date, ShowedUser user,
+	private SimpleShowedItem(int entity_id, String header, String description, String date, ShowedUser user,
 			List<City> cityIds, List<Section> sectionIds, List<String> urls, List<Map> maplist, Work work,
 			List<Adress> aress, List<Tag> tag, Rating rating, String image, List<String> images) {
 		this(entity_id, header, description, date, user, cityIds, sectionIds, urls, maplist, work, aress, tag, rating, image);
@@ -120,11 +121,18 @@ public class SimpleShowedItem implements ShowedItem {
 	
 
 	
-	public SimpleShowedItem(int entity_id, String header, String description, String date, ShowedUser user,
+	private SimpleShowedItem(int entity_id, String header, String description, String date, ShowedUser user,
 			List<City> cityIds, List<Section> sectionIds, List<String> urls, List<Map> maplist, Work work,
 			List<Adress> aress, List<Tag> tag, Rating rating, String image, List<String> images,int activ) { 
 		this(entity_id, header, description, date, user, cityIds, sectionIds, urls, maplist, work, aress, tag, rating, image, images);
 		this.activ = activ;
+	}
+	
+	public SimpleShowedItem(int entity_id, String header, String description, String date, ShowedUser user,
+			List<City> cityIds, List<Section> sectionIds, List<String> urls, List<Map> maplist, Work work,
+			List<Adress> aress, List<Tag> tag, Rating rating, String image, List<String> images,int activ, int status) { 
+		this(entity_id, header, description, date, user, cityIds, sectionIds, urls, maplist, work, aress, tag, rating, image, images, activ);
+		this.status = status;
 	}
 
 	@Override
@@ -214,6 +222,11 @@ public class SimpleShowedItem implements ShowedItem {
 	@Override
 	public int getActiv() {
 		return activ;
+	}
+
+	@Override
+	public int getStatus() { 
+		return status;
 	}
 
 }

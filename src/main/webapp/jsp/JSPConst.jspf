@@ -8,5 +8,12 @@
 <%@ page import="entity.City"%>
 <%@ page import="entity.Section"%>
 <%@ page import="java.util.Calendar"%>
-	<c:set var="AdminMail" value="admi@mail.ua" scope="application" />
+	<c:set var="AdminMail" value="frecityua@gmail.com" scope="application" />
+	<c:set var="pageCount" value="10" scope="request" />
+	<c:set var="chowedItemStatus" value="4" scope="application" />
+	<c:set var="chowedItemUserCreateStatus" value="1" scope="application" />
+	<c:set var="chowedItemAdminStatus" value="3" scope="application" />
+	<c:set var="chowedItemUserUpdateStatus" value="2" scope="application" />
+	<c:set var="deletedEntity" value="0" scope="application" />
+	 
 	 

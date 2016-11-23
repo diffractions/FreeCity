@@ -22,7 +22,7 @@ public class LoginController extends RootController {
 	public static Logger log = Logger.getLogger(Thread.currentThread().getStackTrace()[1].getClassName());
 
 	public static final String PAGE_AFTER_REGISTER_OK = "";
-	public static final String PAGE_AFTER_EXIT_OK = "";
+	public static final String PAGE_AFTER_EXIT_OK = "/";
 	public static final String PAGE_LOGIN = "/jsp/Login.jsp";
 
 	public static final String ATTR_USER = "user";

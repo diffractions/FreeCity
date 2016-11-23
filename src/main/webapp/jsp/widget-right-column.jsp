@@ -12,17 +12,17 @@
 
 
 
-<div class="search-widget widget">
-	<form class="widget-form" action="#" method="get" role="search">
-		<label> <span class="screen-reader-text">Search this
-				website:</span> <input type="search" class="search-field"
-			placeholder="Search &hellip;" value="" name="search" title="Search" />
-		</label>
-		<button>
-			<i class="fa fa-search"></i>
-		</button>
-	</form>
-</div>
+<!-- <div class="search-widget widget"> -->
+<!-- 	<form class="widget-form" action="list" method="get" role="search"> -->
+<!-- 		<label> <span class="screen-reader-text">Search this -->
+<!-- 				website:</span> <input type="search" class="search-field" -->
+<%-- 			placeholder="Search &hellip;" value="<%= request.getParameter("search")==null?"": request.getParameter("search") %>" name="search" title="Search" /> --%>
+<!-- 		</label> -->
+<!-- 		<button> -->
+<!-- 			<i class="fa fa-search"></i> -->
+<!-- 		</button> -->
+<!-- 	</form> -->
+<!-- </div> -->
 <!-- .search.widget -->
 
 
@@ -39,12 +39,21 @@
 				href="<jsp:include page="item-link-href.jsp" />"
 				title="${place.getHeader()}" rel="bookmark"> <span
 					class="recent-post-title"> ${place.getHeader()} </span> <span
-					class="recent-post-thumbnail"> <img
-						src="${place.getSections().get(0).getSectionId()}_img.svg"
-						alt="${place.getSections().get(0).getSectionName()}">
+					class="recent-post-thumbnail"> 
+					
+					
+					
+					
+					
+					<img src="${place.getSections().get(0).getSectionId()}_img.svg" alt="${place.getSections().get(0).getSectionName()}">
+						
+						
+						
 				</span> <span class="recent-post-summary">
 						${item.getDate().get(5)}.${1+item.getDate().get(2)}.${item.getDate().get(1)}
 				</span>
+				
+				
 			</a></li>
 
 		</c:forEach>
@@ -64,9 +73,15 @@
 				href="<jsp:include page="item-link-href.jsp" />"
 				title="${offer.getHeader()}" rel="bookmark"> <span
 					class="recent-post-title"> ${offer.getHeader()} </span> <span
-					class="recent-post-thumbnail"> <img
-						src="${offer.getSections().get(0).getSectionId()}_img.svg"
-						alt="${offer.getSections().get(0).getSectionName()}">
+					class="recent-post-thumbnail">
+					
+					
+					
+					 <img src="${offer.getSections().get(0).getSectionId()}_img.svg" alt="${offer.getSections().get(0).getSectionName()}">
+						
+						
+						
+						
 				</span> <span class="recent-post-summary">
 						${item.getDate().get(5)}.${1+item.getDate().get(2)}.${item.getDate().get(1)}
 				</span>

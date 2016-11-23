@@ -13,7 +13,7 @@
 	
 		<c:if test="${not empty item.getActiv() && item.getActiv() !=-1}">
 
-		<span class="post-date"> <i class="fa fa-clock-o fa-fw"></i> <span class="updated">
+		<span class="post-date"> <i class="fa fa-clock-o fa-fw"></i> <span class="updated" style="color: maroon; font-weight: 600;">
 			<c:if test="${0==item.getActiv()}">Активна</c:if>
 			<c:if test="${1==item.getActiv()}">Запланована подія</c:if>
 			<c:if test="${2==item.getActiv()}">Запис в архіві</c:if>

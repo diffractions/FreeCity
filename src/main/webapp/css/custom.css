@@ -271,6 +271,7 @@ div.info-box {
 	background-color: rgba(81, 81, 81, 0.7);
 			margin:0 0 24px;
 		margin:0 0 1.5rem;
+		
 }
 
 .viewer-toggle-nav {
@@ -338,7 +339,7 @@ body {
 /* 	background-image: url("!whitediamond.png"); */
 /* 	background-image: url("cubes.png"); */
 /* 	background-image: url("fancy_deboss.png"); */
-	background-image: url("!!gplaypattern.png");
+/* 	background-image: url("!!gplaypattern.png"); */
 /* 	background-image: url("grilled.png"); */
 /* 	background-image: url("little_triangles.png"); */
 /* 	background-image: url("polonez_car.png"); */
@@ -355,12 +356,12 @@ body {
  	margin-bottom: 32px;
  	margin-bottom: 2rem;
 	padding: 12px;
-	background: #f7f7f7;
+/* 	background: #f7f7f7; */
 	color: #999;
-	border: 1px solid #e2e2e2;
-//	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.06) inset;
-//	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.06) inset;
-// 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.06) inset;
+/* 	border: 1px solid #e2e2e2; */
+/* 	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.06) inset; */
+/* 	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.06) inset; */
+/*  	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.06) inset; */
 
  }
 
@@ -425,4 +426,22 @@ body {
    background: url('icon_top.png') no-repeat;
    z-index: 5;
  }
+ 
+ .post .entry-image  { 
+ overflow: hidden; 
+    height: 250pt;
+}
+
+ .post .entry-image img {  
+}
+
+.post.summary .entry-thumbnail img {
+    display: block;
+    width: auto;
+    height: 100%;
+}
+ 
+.post.summary .entry-thumbnail { 
+    overflow: hidden;
+}
  

@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="character_encoding_in_UTF-8.jspf"%>
+<%@ include file="JSPConst.jspf"%>
 
 <%@ page import="entity.ShowedItem"%>
 <%@ page import="entity.ShowedUser"%>
@@ -15,7 +16,9 @@
 
 <article class="post hentry" itemscope itemprop="blogPost"
 	itemtype="http://schema.org/Article">
-	<c:if test="${not empty item}">
+	<c:if test="${not empty item}"> 
+	<c:if test="${item.getStatus() >=chowedItemStatus || (item.getStatus()>=chowedItemUserCreateStatus && item.getUser().getUserId()==sessionScope.user.getUserId())}"> 
+	
 	
 		<header class="entry-header">
 			<jsp:include page="item-header-entry-meta.jsp" />
@@ -23,8 +26,8 @@
  
 
 		<c:if test="${not empty item.getImagName()}">
-			<div class="entry-image">
-				<img
+			<div class="entry-image" style="width: 100%; height: auto;">
+				<img style="width: 100%; height: auto;"
 					src="${pageContext.request.contextPath}/user/img/${item.getImagName()}"
 					alt="${item.getImagName()}" itemprop="image">
 			</div>
@@ -77,6 +80,22 @@
 
 		</div>
 		<!-- .entry-content -->
+	</c:if>
+	<c:if test="${item.getStatus()==chowedItemUserCreateStatus}">  
+			<div class="entry-content" itemprop="articleBody">
+				<p>Запис очікує на обробку адміністратором</p>
+			</div>  
+	</c:if>
+	<c:if test="${item.getStatus()==chowedItemUserUpdateStatus}">  
+			<div class="entry-content" itemprop="articleBody">
+				<p>Запис обробляється користувачем</p>
+			</div>  
+	</c:if>
+	<c:if test="${item.getStatus()==chowedItemAdminStatus}">  
+			<div class="entry-content" itemprop="articleBody">
+				<p>Запис обробляється адміністратором</p>
+			</div>  
+	</c:if> 
 	</c:if>
 	<c:if test="${empty item}">
 		<h4>Подія не знайдена</h4>

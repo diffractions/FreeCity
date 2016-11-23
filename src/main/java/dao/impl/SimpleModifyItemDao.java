@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 
 import dao.ModifyItemDao;
+import dao.TagDao;
 import dao.exceptions.DaoSystemException;
 import dao.exceptions.NoSuchEntityException;
 
@@ -44,6 +45,12 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 	private final static String TIME_FROM_COL_NAME = "time-from";
 	private final static String TIME_TO_COL_NAME = "time-to";
 	
+	private final static String TAG_LIST_TABL_NAME = "freecity.tags_list";
+	private final static String TAG_LIST_TAG_ID_COL_NAME = "tags_list.tag_id";
+	private final static String TAG_LIST_ENTITY_ID_COL_NAME = "tags_list.entity_id";
+	private final static String ADD_TAG_TO_ENTITY = "INSERT INTO "+TAG_LIST_TABL_NAME+" ("+TAG_LIST_ENTITY_ID_COL_NAME+", " + TAG_LIST_TAG_ID_COL_NAME + " ) VALUES (?, ?)";
+	private final static String DEL_ENTITY_TAGS = "DELETE FROM "+TAG_LIST_TABL_NAME+" WHERE "+ TAG_LIST_ENTITY_ID_COL_NAME + " = ?";
+ 
 	
 	private final static String CREATE_SIMPLE_ENTITY = "{call createSimpleEntity(" 
 			+ "\'@" + HEADER_COL_NAME + "\', " 
@@ -110,6 +117,8 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 	
 	   
 	private DataSource dataSource;
+
+	private TagDao tagDao;
  
 
 	public DataSource getDataSource() {
@@ -118,6 +127,11 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
+	}
+	
+	
+	public void setTagDao(TagDao tagDao) {
+		this.tagDao = tagDao;
 	}
 
 	@Override
@@ -191,7 +205,7 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 			creatItemStat.execute();
 			createItemResultSet = creatItemStat.getResultSet();
 			
-			log.info("CallableStatement : " + CREATE_ITEM_CAL + " was execute!");
+			log.debug("CallableStatement : " + CREATE_ITEM_CAL + " was execute!");
 
 			log.debug("Result set of " + CREATE_ITEM_CAL + ": " + createItemResultSet);
 
@@ -275,7 +289,7 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 		updateItemStat = conn.prepareCall(UPDATE_ITEM_CAL);
 		updateItemStat.execute();
 		cupdateItemResultSet = updateItemStat.getResultSet();
-		log.info("CallableStatement : " + UPDATE_ITEM_CAL + " was execute!");
+		log.debug("CallableStatement : " + UPDATE_ITEM_CAL + " was execute!");
 
 		log.debug("Result set of " + UPDATE_ITEM_CAL + ": " + cupdateItemResultSet);
 
@@ -291,6 +305,85 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 			throw new DaoSystemException(e1);
 		}
 	}
+		
+	}
+	
+	@Override
+	public void addTagsToItem(String tags, int entityId)
+			throws DaoSystemException, NoSuchEntityException, NumberFormatException { 
+		CallableStatement addTagStat = null; 
+		Connection conn = null;
+		try {
+
+			conn = dataSource.getConnection();
+			for (String tag : tags.split(",")) {
+				String trimTag = tag.trim();
+				if (trimTag.length() > 0) {
+					int tagId = tagDao.getTagIdByName(trimTag);
+					if (tagId == -1) {
+						tagId = tagDao.createTagByName(trimTag);
+					}
+					String SELECT_BY_PROP_CALL_TO_CALL = ADD_TAG_TO_ENTITY;
+					log.info("SQL to Execute : " + SELECT_BY_PROP_CALL_TO_CALL);
+					addTagStat = conn.prepareCall(SELECT_BY_PROP_CALL_TO_CALL);
+
+					addTagStat.setInt(1, entityId);
+					addTagStat.setInt(2, tagId);
+					addTagStat.executeUpdate();
+					log.debug("CallableStatement : " + SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
+				}
+				log.debug("TAG name is emprt \'"+ tag +"\'");
+			}
+
+
+		} catch (SQLException e) {
+			throw new DaoSystemException(e);
+		} finally {
+			try {
+				closeQuaetly(addTagStat, conn);
+			} catch (Exception e1) {
+				throw new DaoSystemException(e1);
+			}
+		}
+	}
+
+	@Override
+	public void updItemTags(String tag, int entityId)
+			throws DaoSystemException, NoSuchEntityException, NumberFormatException {
+		deleteTagsById(entityId);
+		addTagsToItem(tag,entityId);
+		
+	}
+
+	@Override
+	public void deleteTagsById(Integer enti_id)
+			throws DaoSystemException, NoSuchEntityException, NumberFormatException {
+		CallableStatement addTagStat = null; 
+		Connection conn = null;
+		try {
+
+			conn = dataSource.getConnection();
+			 
+					String DEL_CALL = DEL_ENTITY_TAGS;
+					log.info("SQL to Execute : " + DEL_CALL);
+					addTagStat = conn.prepareCall(DEL_CALL);
+
+					addTagStat.setInt(1, enti_id); 
+					addTagStat.executeUpdate();
+					log.debug("CallableStatement : " + DEL_CALL + " was execute!");
+		 
+ 
+
+		} catch (SQLException e) {
+			throw new DaoSystemException(e);
+		} finally {
+			try {
+				closeQuaetly(addTagStat, conn);
+			} catch (Exception e1) {
+				throw new DaoSystemException(e1);
+			}
+		}
+		
 		
 	}
 

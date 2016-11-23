@@ -12,6 +12,7 @@ import dao.UserDao;
 import dao.exceptions.DaoSystemException;
 import entity.ShowedUser;
 import inject.Inject;
+import utils.EncodeUtils;
 
 public class CreateUserController extends RootController {
 	/**
@@ -24,7 +25,7 @@ public class CreateUserController extends RootController {
 	public static final String PAGE_GET_OK = "/jsp/CreateUser.jsp";
 	public static final String PAGE_ERROR_LOGIN = "login#registration";
 	public static final String INDEX_PAGE = "";
-	public static final String PAGE_NEW_USER_OK = "";
+	public static final String PAGE_NEW_USER_OK = "/";
 
 	private final static String PARAM_USER_FIRST_NAME = "first_name";
 	private final static String PARAM_USER_LAST_NAME = "last_name";
@@ -52,8 +53,8 @@ public class CreateUserController extends RootController {
 		try {
 
 			login = request.getParameter(PARAM_USER_LOGIN);
-			String first_name = new String(request.getParameter(PARAM_USER_FIRST_NAME).getBytes("ISO-8859-1"), "UTF-8");
-			String last_name = new String(request.getParameter(PARAM_USER_LAST_NAME).getBytes("ISO-8859-1"), "UTF-8");
+			String first_name = new String(request.getParameter(PARAM_USER_FIRST_NAME).getBytes(EncodeUtils.CP1251_CODE), EncodeUtils.UTF_8_CODE);
+			String last_name = new String(request.getParameter(PARAM_USER_LAST_NAME).getBytes(EncodeUtils.CP1251_CODE), EncodeUtils.UTF_8_CODE);
 			String email = request.getParameter(PARAM_USER_EMAIL);
 			String password = request.getParameter(PARAM_USER_PASSWORD);
 			ShowedUser user = null;

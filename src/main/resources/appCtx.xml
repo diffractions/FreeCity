@@ -8,6 +8,9 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/freecity?useUnicode=true&amp;characterEncoding=UTF-8" />
+		<property name="username" value="root" />
+		<property name="password" value="si17st18" />  
 	</bean>
 
 
@@ -31,10 +34,14 @@
 		<property name="imgDao" ref="imgDao"></property>
 	</bean>
 
+	<bean id="tagDao" class="dao.impl.TagDaoImpl" scope="singleton">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean> 
 
 	<bean id="modifyItemDao" class="dao.impl.SimpleModifyItemDao"
 		scope="singleton">
 		<property name="dataSource" ref="dataSource"></property>
+		<property name="tagDao" ref="tagDao"></property>
 	</bean>
 
 
@@ -42,9 +49,6 @@
 	<bean id="userDao" class="dao.impl.SimpleUserDao" scope="singleton">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-	<bean id="tagDao" class="dao.impl.TagDaoImpl" scope="singleton">
-		<property name="dataSource" ref="dataSource"></property>
-	</bean> 
 
 
 </beans>

@@ -22,6 +22,8 @@
 	<div id="list1" class="tabcontent tabs">
 </c:if>
 <c:forEach var="itemc" items="${items}">
+
+	<c:if test="${itemc.getStatus() >=chowedItemStatus || (itemc.getStatus()>=chowedItemUserCreateStatus && itemc.getUser().getUserId()==sessionScope.user.getUserId())}"> 
 	<c:set var="item" value="${itemc}" scope="request" />
 	<c:if test="${item.getSections().get(0).getSectionView() < 10}">
 		<article class="post summary hentry" itemscope itemprop="blogPost"
@@ -69,13 +71,21 @@
 		</article>
 		<!-- .post -->
 	</c:if>
+	</c:if>
 </c:forEach>
 <div class="block-divider"></div>
 <jsp:include page="left-right-menu.jsp" />
-<c:if test="${(not empty section_view &&  section_view < 10)}">
+<c:if test="${(not empty section_view &&  section_view < 10 )}">
+
 
 </div>
-<jsp:include page="item-all-map.jsp" />
+
+
+ <jsp:include page="item-all-map.jsp" />
+
 </c:if>
+
+
+
 
 

@@ -48,10 +48,10 @@ public class SecurityFilter implements Filter {
 			chain.doFilter(request, response);
 		} else {
 
-			log.trace("request from UN register user");
+			log.info("request from UN register user, QUERY:" + ((HttpServletRequest) request).getQueryString() + " req:" +encode(((HttpServletRequest) request).getQueryString()) );
 			((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath()
 					+ "/login?request=" + ((HttpServletRequest) request).getRequestURI()
-					+ encode(((HttpServletRequest) request).getQueryString()));
+					+ encode("?"+((HttpServletRequest) request).getQueryString()));
 		}
 	}
 

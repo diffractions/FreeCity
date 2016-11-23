@@ -48,9 +48,13 @@ public class ItemByIdController extends RootController {
 			if (entityDao == null) {
 				throw new DaoException("EntityDAO not found");
 			}
-
-			String id = request.getParameter(PARAM_ID);
-
+ 
+			int id = Integer.parseInt(request.getParameter(PARAM_ID));
+		 
+			
+			int status = -1;
+			
+			
 			ShowedItem itemModel = entityDao.selectById(id);
 
 			if ((request.getAttribute("city_selected") != null)
@@ -82,7 +86,7 @@ public class ItemByIdController extends RootController {
 
 			return;
 
-		} catch (DaoException e) {
+		} catch (DaoException | NumberFormatException e) {
 			log.error(e);
 			request.setAttribute(ATTRIBUTE_ERR_CODE, "404");
 			request.setAttribute(ATTRIBUTE_ERR_STR, e.getMessage());

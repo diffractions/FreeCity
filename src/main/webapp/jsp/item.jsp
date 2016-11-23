@@ -9,9 +9,11 @@
 <%@ page import="entity.Section"%>
 <%@ page import="java.util.Calendar"%>
 
-
-
+ 
 <c:forEach var="itemc" items="${items}">
+	<c:if test="${itemc.getStatus() >=chowedItemStatus || (itemc.getStatus()>=chowedItemUserCreateStatus && itemc.getUser().getUserId()==sessionScope.user.getUserId())}"> 
+
+
 	<c:set var="item" value="${itemc}" scope="request" />
 	<c:if test="${item.getSections().get(0).getSectionView() < 10}">
 
@@ -53,33 +55,5 @@
 		</article>
 		<!-- .post -->
 	</c:if>
-</c:forEach>
-<div class="pagination">
-
- 
-		
-		
-	<div style="width: 100%">
-		<a class="more button"
-			href="<%@ include file="href-path.jspf"%>list"
-			style="float:right; margin: 0 auto; text-align: center;">Показати
-			більше оновлень</a> 
-	</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-
-	<table style="width: 99%;">
-		<tr>  
-			<td><a class="more button" href="<%@ include file="href-path.jspf"%>list?section=100" style="width: 100%; margin: 0 auto; text-align: center;">Перейти в розділ подій</a></td>
-			<td><a class="more button" href="<%@ include file="href-path.jspf"%>list?section=101" style="width: 100%; margin: 0 auto; text-align: center;">Перейти в розділ місць</a></td>
-			<td><a class="more button" href="<%@ include file="href-path.jspf"%>list?section=102" style="width: 100%; margin: 0 auto; text-align: center;">Перейти в розділ послуг</a></td>
-		</tr>
-	</table>
- 
-</div>
-
-
+	</c:if> 
+</c:forEach>  

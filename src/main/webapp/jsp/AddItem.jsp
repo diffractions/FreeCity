@@ -1,4 +1,4 @@
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -46,7 +46,9 @@
 			<div class="row">
 				<div class="three-quarters-block">
 					<div class="content">
-
+									<c:if test="${not empty errorString}">
+										<div class="box error-box">${errorString}</div>
+									</c:if>
 						<article class="post hentry" itemscope itemprop="blogPost"
 							itemtype="http://schema.org/Article">
 
@@ -68,6 +70,14 @@
 	</main>
 
 
+
+	<jsp:include page="widget-buttom-page.jsp" />
+	<jsp:include page="widget-footer.jsp" />
+
+
+	<!-- Scripts -->
+	<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="js/custom.js"></script>
 
 </body>
 </html>

@@ -37,11 +37,12 @@
 <div id="site-header" role="banner">
 	<div class="container">
 		<div class="row">
-
+ 
 			<div id="branding">
 				<a class="logo" onclick="delete_cookie ('city')"
-					href="${pageContext.request.contextPath}">Free City</a>
-			</div>
+					href="http://freecity.in.ua/">FreeCity.in.ua</a>
+			</div> 
+
 			<!-- #branding -->
 
 			<nav id="main-menu" role="navigation" itemscope
@@ -112,17 +113,22 @@
 					<c:if test="${not empty sessionScope.user}">
 						<li class="menu-home menu-home-not"><a>Привіт: ${user.getFirstName()}</a>
 							<ul class="vertical-navigation ">
-								<li class="menu-home"><a href="${pageContext.request.contextPath}/create">Створити запис</a></li>
-								<li class="menu-home"><a href="${pageContext.request.contextPath}/list?user=${sessionScope.user.getUserId()}">Записи користувача</a></li>
-								<li class="menu-home"><a href="${pageContext.request.contextPath}/user?user=${sessionScope.user}">Редагувати дані</a></li>
-								<li class="menu-home"><a href="${pageContext.request.contextPath}/login?logout=exit">Вихід</a></li>
+								<li class="menu-home"><a onclick="delete_cookie ('city')"
+					href="${pageContext.request.contextPath}/create">Створити запис</a></li>
+								<li class="menu-home"><a onclick="delete_cookie ('city')"
+					href="${pageContext.request.contextPath}/list?user=${sessionScope.user.getUserId()}">Записи користувача</a></li>
+								<li class="menu-home"><a onclick="delete_cookie ('city')"
+					href="${pageContext.request.contextPath}/user?user=${sessionScope.user}">Редагувати дані</a></li>
+								<li class="menu-home"><a onclick="delete_cookie ('city')"
+					href="${pageContext.request.contextPath}/login?logout=exit">Вихід</a></li>
 							</ul></li>
 					</c:if>
-					<c:if test="${ empty sessionScope.user}">
-						<li class="menu-home"><a
-							href="${pageContext.request.contextPath}/login?request=${pageContext.request.requestURI}<%=HTTP_URL_Utils.encode("?"+request.getQueryString())%>">
-							 Вхід</a></li> 
-					</c:if>
+<%-- 					<c:if test="${ empty sessionScope.user}"> --%>
+<!-- 						<li class="menu-home"><a -->
+<!-- 						onclick="delete_cookie ('city')" -->
+<%-- 					href="${pageContext.request.contextPath}/login?request=${pageContext.request.requestURI}<%=HTTP_URL_Utils.encode("?"+request.getQueryString())%>"> --%>
+<!-- 							 Вхід</a></li>  -->
+<%-- 					</c:if> --%>
 				</ul>
 			</nav>
 			<!-- #main-menu --> 
@@ -202,8 +208,8 @@
 		        x.className += " w3-show";
 		    } else {
 		        x.className = x.className.replace(" w3-show", "");
-// 		        if ("myUL"==(myUL)) {
-// 		        location.replace('${pageContext.request.contextPath}/${city_selected.getShortName()}');}
+		        if ("myUL"==(myUL)) {
+		        location.replace('${pageContext.request.contextPath}/${city_selected.getShortName()}');}
 		    }
 		}
  

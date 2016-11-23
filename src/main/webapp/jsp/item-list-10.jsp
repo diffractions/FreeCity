@@ -23,9 +23,12 @@
 	<article class="post summary hentry" style="padding-left: 0;" itemscope itemprop="blogPost"
 		itemtype="http://schema.org/Article"> 
 		<c:forEach var="itemc" items="${items}">
+		
+	<c:if test="${itemc.getStatus() >=chowedItemStatus || (itemc.getStatus()>=chowedItemUserCreateStatus && itemc.getUser().getUserId()==sessionScope.user.getUserId())}"> 
 			<c:set var="item" value="${itemc}" scope="request" />
 			<c:if test="${item.getSections().get(0).getSectionView() == 10}">
 				<jsp:include page="item-list-map.jsp" />
+			</c:if>
 			</c:if>
 		</c:forEach>
 		<jsp:include page="left-right-menu.jsp" />

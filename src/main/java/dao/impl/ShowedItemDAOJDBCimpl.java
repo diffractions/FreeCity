@@ -2,6 +2,7 @@ package dao.impl;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.Format;
@@ -54,6 +55,7 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 	private final static String ENTITY_DESCRIPTION_COL_NAME = "description";
 	private final static String ENTITY_DATE_COL_NAME = "entity.date";
 	private final static String ENTITY_USER_COL_NAME = "entity.user_id";
+	private final static String ENTITY_STATUS_COL_NAME = "entity.status";
 
 	private final static String USER_TABL_NAME = "freecity.user";
 	private final static String USER_ID_COL_NAME = "user_id";
@@ -83,6 +85,8 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 	private final static String TAG_TABL_NAME = "freecity.tags";
 	private final static String TAG_TAG_ID_COL_NAME = "tags.tag_id";
 	private final static String TAG_TAG_NAME_COL_NAME = "tag_name";
+	
+
 
 	private final static String RATING_TABL_NAME = "freecity.rating";
 	private final static String RATING_COL_NAME = "rating";
@@ -96,34 +100,16 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 
 	private final static String ID = "ID";
 	private final static String SELECT_ALL_CALL = "{call selectAll()}";
-	private final static String SELECT_BY_ID_CALL = "{call selectById(@" + ID + ")}";
+	private final static String SELECT_BY_ID_CALL = "{call selectById(?)}"; 
 
+
+	
+	
 	private final static String COL_NAME = "column_name ";
 	private final static String COL_VAL = "column_val ";
 	private final static String COL_LIMIT = "column_limit ";
 	private final static String OPERATION = "\' = \'";
-	// private final static String SELECT_BY_PROP_CALL = "{call
-	// getItemsByProperties(\'@" + COL_NAME + "\', @" + OPERATION
-	// + ", @" + COL_VAL + ")}";
-	// private final static String SELECT_LIMIT_CALL = "{call
-	// selectAllLimitFrom(@" + COL_LIMIT + ")}";
-	// private final static String SELECT_LIMIT_PROP_CALL = "{call
-	// getItemsByPropertiesLimit(\'@" + COL_NAME + "\', @"
-	// + OPERATION + ", @" + COL_VAL + ", @" + COL_LIMIT + ")}";
-	// private final static String SELECT_BY_PROP_CALL_CITY = "{call
-	// getItemsByPropertiesCity(\'@" + COL_NAME + "\', @"
-	// + OPERATION + ", @" + COL_VAL + ", \'@" + CITY_ID_COL_NAME + "\')}";
-	// private final static String SELECT_LIMIT_PROP_CITY_CALL = "{call
-	// getItemsByPropertiesLimitCity(\'@" + COL_NAME
-	// + "\', @" + OPERATION + ", @" + COL_VAL + ",\'@" + COL_LIMIT + "\', \'@"
-	// + CITY_ID_COL_NAME + "\')}";
-
-//	private final static String CONDITIONS1 = "conditions1";
-//	private final static String CONDITIONS2 = "conditions2";
-//	private final static String CONDITIONS3 = "conditions3";
-
-//	private final static String EXECUTE_SELECT_ALL_CALL = "{call executeSelectAll(@" + CONDITIONS1 + ", @" + CONDITIONS2
-//			+ ", @" + CONDITIONS3 + ")}";
+ 
 
 	private final static String EXECUTE_SELECT_ALL_CALL = "{call executeSelectAll(?,?,?,?)}";
 
@@ -239,6 +225,12 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 				CONDITIONS11.append(" section.section_view in(" + section_view + ")");
 			}
  
+			
+			
+
+	
+			
+			
 			if (action != null && !action.equals("")) {
 
 				Calendar ret = Calendar.getInstance();
@@ -252,15 +244,15 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 							+ ret.get(Calendar.DAY_OF_MONTH) + "\'";
 				} else if (action.equalsIgnoreCase("now")) {
 					actions1 = " date.date_from <= \'" + ret.get(Calendar.YEAR) + "-" + (ret.get(Calendar.MONTH) + 1)
-							+ "-" + ret.get(Calendar.DAY_OF_MONTH) + "\' and date.date_to >= \'"
-							+ ret.get(Calendar.YEAR) + "-" + (ret.get(Calendar.MONTH) + 1) + "-"
-							+ ret.get(Calendar.DAY_OF_MONTH) + "\' and date.month_from  <=\'"
-							+ (ret.get(Calendar.MONTH) + 1) + "\' and date.month_to  >=\'";
+							+ "-" + ret.get(Calendar.DAY_OF_MONTH) ;
 
 					int dayOfWeek = ret.get(Calendar.DAY_OF_WEEK) - 1;
 					if (dayOfWeek == 0)
 						dayOfWeek = 7;
-					actions2 = (ret.get(Calendar.MONTH) + 1) + "\' and date.day_from  <=\'" + (dayOfWeek)
+					actions2 = "\' and date.date_to >= \'"
+							+ ret.get(Calendar.YEAR) + "-" + (ret.get(Calendar.MONTH) + 1) + "-"
+							+ ret.get(Calendar.DAY_OF_MONTH) + "\' and date.month_from  <=\'"
+							+ (ret.get(Calendar.MONTH) + 1) + "\' and date.month_to  >=\'"+(ret.get(Calendar.MONTH) + 1) + "\' and date.day_from  <=\'" + (dayOfWeek)
 							+ "\' and date.day_to  >=\'" + (dayOfWeek) + "\' and date.time_from  <=\'"
 							+ (ret.get(Calendar.HOUR_OF_DAY)) + ":" + (ret.get(Calendar.MINUTE))
 							+ "\' and date.time_to  >=\'" + (ret.get(Calendar.HOUR_OF_DAY)) + ":"
@@ -297,6 +289,10 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 				CONDITIONS11.append(actions1);
 			}
  
+			 
+			
+ 
+			
 			String SELECT_BY_PROP_CALL_TO_CALL = EXECUTE_SELECT_ALL_CALL; 
 
 			log.info("SQL to Execute : " + SELECT_BY_PROP_CALL_TO_CALL);
@@ -309,10 +305,14 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 
 			selectAllStat.execute();
 
+			log.trace("CONDITIONS11 = " + CONDITIONS11.toString());
+			log.trace("CONDITIONS22 = " + CONDITIONS22.toString());
+			log.trace("CONDITIONS33 = " + CONDITIONS33.toString()); 
+			
 			if(count!=null)
 			count[0] = selectAllStat.getInt(4);
 			selectAllResultSet = selectAllStat.getResultSet();
-			log.info("CallableStatement : " + SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
+			log.trace("CallableStatement : " + SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
 
 			createItems(selectAllResultSet, entitys);
 
@@ -332,201 +332,26 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 		return entitys;
 	}
 
-
-//	@Override
-//	public CopyOnWriteArraySet<ShowedItem> executeSelectAll(String city, String date, String section,
-//			String section_view, String user, String from, String limit, String tag, String action)
-//			throws NoSuchEntityException, NumberFormatException, DaoSystemException {
-//
-//		CallableStatement selectAllStat = null;
-//		ResultSet selectAllResultSet = null;
-//		CopyOnWriteArraySet<ShowedItem> entitys = new CopyOnWriteArraySet<ShowedItem>();
-//		StringBuilder CONDITIONS11 = new StringBuilder("\'");
-//		StringBuilder CONDITIONS22 = new StringBuilder("\'");
-//		StringBuilder CONDITIONS33 = new StringBuilder("\'");
-//		try {
-//			Connection conn = dataSource.getConnection();
-//			if (city != null && !city.equals("") && !city.equals("-1")) {
-//
-//				if (CONDITIONS11.toString().equals("\'"))
-//					CONDITIONS11.append(" where ");
-//				else
-//					CONDITIONS11.append(" and ");
-//				CONDITIONS11.append(" city.city_id = " + city);
-//			}
-//			if (date != null && !date.equals("")) {
-//
-//				Calendar ret = Calendar.getInstance();
-//				ret.setTimeInMillis(Long.parseLong(date));
-//				Formatter month = new Formatter().format("%1$02d", (1 + ret.get(Calendar.MONTH)));
-//				Formatter dates = new Formatter().format("%1$02d", ret.get(Calendar.DATE));
-//				String id1 = +ret.get(Calendar.YEAR) + "" + month + "" + dates + "000000  AND  "
-//						+ ret.get(Calendar.YEAR) + "" + month + "" + dates + "235959 ";
-//				month.close();
-//
-//				if (CONDITIONS11.toString().equals("\'"))
-//					CONDITIONS11.append(" where ");
-//				else
-//					CONDITIONS11.append(" and ");
-//
-//				CONDITIONS11.append(" entity.date BETWEEN " + id1);
-//			}
-//			if (section != null && !section.equals("")) {
-//
-//				String id1 = "(";
-//				List<Section> s = sectionDao.getSectionById(new Integer(section)).getAllChilds();
-//				int i = s.size();
-//				for (Section id0 : s) {
-//					id1 += id0.getSectionId();
-//					if (--i > 0)
-//						id1 += ", ";
-//				}
-//				id1 += ")";
-//
-//				if (CONDITIONS11.toString().equals("\'"))
-//					CONDITIONS11.append(" where ");
-//				else
-//					CONDITIONS11.append(" and ");
-//
-//				CONDITIONS11.append(" section.section_id in " + id1);
-//			}
-//			if (user != null && !user.equals("")) {
-//
-//				if (CONDITIONS11.toString().equals("\'"))
-//					CONDITIONS11.append(" where ");
-//				else
-//					CONDITIONS11.append(" and ");
-//
-//				CONDITIONS11.append(" user.user_id = " + user);
-//			}
-//			if (limit != null && !limit.equals("")) {
-//
-//				CONDITIONS22.append(" limit ");
-//				if (from != null && !from.equals("") && !from.equals("0")) {
-//					CONDITIONS22.append(from + ", ");
-//				}
-//				CONDITIONS22.append(limit);
-//			}
-//			if (tag != null && !tag.equals("")) {
-//				if (CONDITIONS11.toString().equals("\'"))
-//					CONDITIONS11.append(" where ");
-//				else
-//					CONDITIONS11.append(" and ");
-//
-//				CONDITIONS11.append(" tags.tag_id = " + tag);
-//			}
-//			if (section_view != null && !section_view.equals("")) {
-//				if (CONDITIONS11.toString().equals("\'"))
-//					CONDITIONS11.append(" where ");
-//				else
-//					CONDITIONS11.append(" and ");
-//
-//				CONDITIONS11.append(" section.section_view in (" + section_view + ")");
-//			}
-//
-//			if (action != null && !action.equals("")) {
-//
-//				Calendar ret = Calendar.getInstance();
-//				ret.setFirstDayOfWeek(Calendar.MONDAY);
-//				String actions1 = null;
-//				String actions2 = null;
-//				if (action.equalsIgnoreCase("active")) {
-//					actions1 = " date.date_from <= \\\'" + ret.get(Calendar.YEAR) + "-" + (ret.get(Calendar.MONTH) + 1)
-//							+ "-" + ret.get(Calendar.DAY_OF_MONTH) + "\\\' and date.date_to >= \\\'"
-//							+ ret.get(Calendar.YEAR) + "-" + (ret.get(Calendar.MONTH) + 1) + "-"
-//							+ ret.get(Calendar.DAY_OF_MONTH) + "\\\'";
-//				} else if (action.equalsIgnoreCase("now")) {
-//					actions1 = " date.date_from <= \\\'" + ret.get(Calendar.YEAR) + "-" + (ret.get(Calendar.MONTH) + 1)
-//							+ "-" + ret.get(Calendar.DAY_OF_MONTH) + "\\\' and date.date_to >= \\\'"
-//							+ ret.get(Calendar.YEAR) + "-" + (ret.get(Calendar.MONTH) + 1) + "-"
-//							+ ret.get(Calendar.DAY_OF_MONTH) + "\\\' and date.month_from  <=\\\'"
-//							+ (ret.get(Calendar.MONTH) + 1) + "\\\' and date.month_to  >=\\\'";
-//
-//					int dayOfWeek = ret.get(Calendar.DAY_OF_WEEK) - 1;
-//					if (dayOfWeek == 0)
-//						dayOfWeek = 7;
-//					actions2 = (ret.get(Calendar.MONTH) + 1) + "\\\' and date.day_from  <=\\\'" + (dayOfWeek)
-//							+ "\\\' and date.day_to  >=\\\'" + (dayOfWeek) + "\\\' and date.time_from  <=\\\'"
-//							+ (ret.get(Calendar.HOUR_OF_DAY)) + ":" + (ret.get(Calendar.MINUTE))
-//							+ "\\\' and date.time_to  >=\\\'" + (ret.get(Calendar.HOUR_OF_DAY)) + ":"
-//							+ (ret.get(Calendar.MINUTE) + "\\\'");
-//				} else if (action.equalsIgnoreCase("future")) {
-//					actions1 = " date.date_from > \\\'" + ret.get(Calendar.YEAR) + "-" + (ret.get(Calendar.MONTH) + 1)
-//							+ "-" + ret.get(Calendar.DAY_OF_MONTH) + "\\\'";
-//				} else if (action.equalsIgnoreCase("archive")) {
-//					actions1 = " date.date_to < \\\'" + ret.get(Calendar.YEAR) + "-" + (ret.get(Calendar.MONTH) + 1)
-//							+ "-" + ret.get(Calendar.DAY_OF_MONTH) + "\\\'";
-//				}
-//
-//				if (actions1 != null) {
-//					if (CONDITIONS11.toString().equals("\'"))
-//						CONDITIONS11.append(" where ");
-//					else
-//						CONDITIONS11.append(" and ");
-//					CONDITIONS11.append(actions1);
-//				}
-//				if (actions2 != null) {
-//					CONDITIONS33.append(actions2);
-//				}
-//			} else {
-//
-//				Calendar ret = Calendar.getInstance();
-//				ret.setFirstDayOfWeek(Calendar.MONDAY);
-//				String actions1 = " date.date_to >= \\\'" + ret.get(Calendar.YEAR) + "-" + (ret.get(Calendar.MONTH) + 1)
-//						+ "-" + ret.get(Calendar.DAY_OF_MONTH) + "\\\'";
-//				if (CONDITIONS11.toString().equals("\'"))
-//					CONDITIONS11.append(" where ");
-//				else
-//					CONDITIONS11.append(" and ");
-//				CONDITIONS11.append(actions1);
-//			}
-//
-//			CONDITIONS11.append("\'");
-//			CONDITIONS22.append("\'");
-//			CONDITIONS33.append("\'");
-//			String SELECT_BY_PROP_CALL_TO_CALL = EXECUTE_SELECT_ALL_CALL
-//					.replace("@" + CONDITIONS1, CONDITIONS11.toString())
-//					.replace("@" + CONDITIONS2, CONDITIONS22.toString())
-//					.replace("@" + CONDITIONS3, CONDITIONS33.toString());
-//
-//			log.info("SQL to Execute : " + SELECT_BY_PROP_CALL_TO_CALL);
-//			selectAllStat = conn.prepareCall(SELECT_BY_PROP_CALL_TO_CALL);
-//			selectAllStat.execute();
-//			selectAllResultSet = selectAllStat.getResultSet();
-//			log.info("CallableStatement : " + SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
-//
-//			createItems(selectAllResultSet, entitys);
-//
-//		} catch (SQLException e) {
-//			log.error("Error description", e);
-//			throw new DaoSystemException(e);
-//		} finally {
-//			log.debug("Close SELECT_ALL_SQL ResultSet and SELECT_ALL_SQL Statement");
-//			try {
-//				closeQuaetly(selectAllResultSet, selectAllStat);
-//			} catch (Exception e1) {
-//				log.error(e1);
-//				throw new DaoSystemException(e1);
-//			}
-//		}
-//
-//		return entitys;
-//	}
+ 
 
 	@Override
-	public ShowedItem selectById(String id) throws DaoSystemException, NoSuchEntityException {
+	public ShowedItem selectById(int id) throws DaoSystemException, NoSuchEntityException {
 
 		CallableStatement selectByIdStat = null;
 		ResultSet selectByIdResultSet = null;
-
+		Connection conn = null;
 		try {
 
-			Connection conn = dataSource.getConnection();
-			log.debug("SQL to Execute : " + SELECT_BY_ID_CALL.replaceAll("@" + ID, id));
-			selectByIdStat = conn.prepareCall(SELECT_BY_ID_CALL.replaceAll("@" + ID, id));
+			conn= dataSource.getConnection();
+			selectByIdStat = conn.prepareCall(SELECT_BY_ID_CALL); 
+			 
+			
+			selectByIdStat.setInt(1, id);  
+
+			 
 			selectByIdStat.execute();
 			selectByIdResultSet = selectByIdStat.getResultSet();
-			log.debug("CallableStatement : " + SELECT_BY_ID_CALL.replaceAll("@" + ID, id) + " was execute!");
+			log.debug("CallableStatement : " + SELECT_BY_ID_CALL+ " was execute!");
 
 			if (selectByIdResultSet.next()) {
 				printItem(selectByIdResultSet);
@@ -579,135 +404,7 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 
 		return entitys;
 	}
-
-	/*
-	 * @Override public CopyOnWriteArraySet<ShowedItem> selectAllLimit(String
-	 * from, String count) throws NoSuchEntityException, NumberFormatException,
-	 * DaoSystemException { CallableStatement selectByPropStat = null; ResultSet
-	 * selectByPropResultSet = null; CopyOnWriteArraySet<ShowedItem> entitys =
-	 * new CopyOnWriteArraySet<ShowedItem>(); Connection conn = null; try {
-	 * 
-	 * String SELECT_BY_PROP_CALL_TO_CALL = SELECT_LIMIT_CALL.replace("@" +
-	 * COL_LIMIT, from + ", " + count);
-	 * 
-	 * log.info("SQL to Execute : " + SELECT_BY_PROP_CALL_TO_CALL); conn =
-	 * dataSource.getConnection(); selectByPropStat =
-	 * conn.prepareCall(SELECT_BY_PROP_CALL_TO_CALL);
-	 * selectByPropStat.execute(); selectByPropResultSet =
-	 * selectByPropStat.getResultSet(); log.debug("CallableStatement : " +
-	 * SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
-	 * 
-	 * createItems(selectByPropResultSet, entitys);
-	 * 
-	 * } catch (SQLException e) { throw new DaoSystemException(e); } finally {
-	 * try { closeQuaetly(selectByPropResultSet, selectByPropStat, conn); }
-	 * catch (Exception e1) { throw new DaoSystemException(e1); } } return
-	 * entitys; }
-	 * 
-	 * @Override public CopyOnWriteArraySet<ShowedItem>
-	 * selectAllLimitCity(String column_name, String id, String limit, String
-	 * city_id) throws NoSuchEntityException, NumberFormatException,
-	 * DaoSystemException { CallableStatement selectByPropStat = null; ResultSet
-	 * selectByPropResultSet = null; CopyOnWriteArraySet<ShowedItem> entitys =
-	 * new CopyOnWriteArraySet<ShowedItem>(); Connection conn = null; try {
-	 * 
-	 * String SELECT_BY_PROP_CALL_TO_CALL =
-	 * SELECT_LIMIT_PROP_CITY_CALL.replace("@" + COL_LIMIT, limit)
-	 * .replaceAll("@" + CITY_ID_COL_NAME, city_id); SELECT_BY_PROP_CALL_TO_CALL
-	 * = createPrepareCall(column_name, id, SELECT_BY_PROP_CALL_TO_CALL);
-	 * 
-	 * log.info("SQL to Execute : " + SELECT_BY_PROP_CALL_TO_CALL); conn =
-	 * dataSource.getConnection(); selectByPropStat =
-	 * conn.prepareCall(SELECT_BY_PROP_CALL_TO_CALL);
-	 * selectByPropStat.execute(); selectByPropResultSet =
-	 * selectByPropStat.getResultSet(); log.debug("CallableStatement : " +
-	 * SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
-	 * 
-	 * createItems(selectByPropResultSet, entitys);
-	 * 
-	 * } catch (SQLException e) { throw new DaoSystemException(e); } finally {
-	 * try { closeQuaetly(selectByPropResultSet, selectByPropStat, conn); }
-	 * catch (Exception e1) { throw new DaoSystemException(e1); } } return
-	 * entitys; }
-	 * 
-	 * @Override public CopyOnWriteArraySet<ShowedItem> selectAllLimit(String
-	 * column_name, String id, String limit) throws NoSuchEntityException,
-	 * NumberFormatException, DaoSystemException { CallableStatement
-	 * selectByPropStat = null; ResultSet selectByPropResultSet = null;
-	 * CopyOnWriteArraySet<ShowedItem> entitys = new
-	 * CopyOnWriteArraySet<ShowedItem>(); Connection conn = null; try {
-	 * 
-	 * String SELECT_BY_PROP_CALL_TO_CALL = SELECT_LIMIT_PROP_CALL.replace("@" +
-	 * COL_LIMIT, limit); SELECT_BY_PROP_CALL_TO_CALL =
-	 * createPrepareCall(column_name, id, SELECT_BY_PROP_CALL_TO_CALL);
-	 * 
-	 * log.info("SQL to Execute : " + SELECT_BY_PROP_CALL_TO_CALL); conn =
-	 * dataSource.getConnection(); selectByPropStat =
-	 * conn.prepareCall(SELECT_BY_PROP_CALL_TO_CALL);
-	 * selectByPropStat.execute(); selectByPropResultSet =
-	 * selectByPropStat.getResultSet(); log.debug("CallableStatement : " +
-	 * SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
-	 * 
-	 * createItems(selectByPropResultSet, entitys);
-	 * 
-	 * } catch (SQLException e) { throw new DaoSystemException(e); } finally {
-	 * try { closeQuaetly(selectByPropResultSet, selectByPropStat, conn); }
-	 * catch (Exception e1) { throw new DaoSystemException(e1); } } return
-	 * entitys; }
-	 * 
-	 * @Override public CopyOnWriteArraySet<ShowedItem> selectAllByCity(String
-	 * column_name, String id, String city_id) throws NoSuchEntityException,
-	 * NumberFormatException, DaoSystemException { CallableStatement
-	 * selectByPropStat = null; ResultSet selectByPropResultSet = null;
-	 * CopyOnWriteArraySet<ShowedItem> entitys = new
-	 * CopyOnWriteArraySet<ShowedItem>(); Connection conn = null; try {
-	 * 
-	 * String SELECT_BY_PROP_CALL_TO_CALL =
-	 * SELECT_BY_PROP_CALL_CITY.replaceAll("@" + CITY_ID_COL_NAME, city_id);
-	 * SELECT_BY_PROP_CALL_TO_CALL = createPrepareCall(column_name, id,
-	 * SELECT_BY_PROP_CALL_TO_CALL);
-	 * 
-	 * log.info("SQL to Execute : " + SELECT_BY_PROP_CALL_TO_CALL); conn =
-	 * dataSource.getConnection(); selectByPropStat =
-	 * conn.prepareCall(SELECT_BY_PROP_CALL_TO_CALL);
-	 * selectByPropStat.execute(); selectByPropResultSet =
-	 * selectByPropStat.getResultSet(); log.debug("CallableStatement : " +
-	 * SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
-	 * 
-	 * createItems(selectByPropResultSet, entitys);
-	 * 
-	 * } catch (SQLException e) { log.warn("print error", e); throw new
-	 * DaoSystemException(e); } finally { try {
-	 * closeQuaetly(selectByPropResultSet, selectByPropStat, conn); } catch
-	 * (Exception e1) { throw new DaoSystemException(e1); } } return entitys; }
-	 * 
-	 * @Override public CopyOnWriteArraySet<ShowedItem> selectAll(String
-	 * column_name, String id) throws DaoSystemException, NoSuchEntityException,
-	 * NumberFormatException { CallableStatement selectByPropStat = null;
-	 * ResultSet selectByPropResultSet = null; CopyOnWriteArraySet<ShowedItem>
-	 * entitys = new CopyOnWriteArraySet<ShowedItem>(); Connection conn = null;
-	 * 
-	 * try {
-	 * 
-	 * String SELECT_BY_PROP_CALL_TO_CALL = SELECT_BY_PROP_CALL;
-	 * SELECT_BY_PROP_CALL_TO_CALL = createPrepareCall(column_name, id,
-	 * SELECT_BY_PROP_CALL);
-	 * 
-	 * log.info("SQL to Execute : " + SELECT_BY_PROP_CALL_TO_CALL); conn =
-	 * dataSource.getConnection(); selectByPropStat =
-	 * conn.prepareCall(SELECT_BY_PROP_CALL_TO_CALL);
-	 * selectByPropStat.execute(); selectByPropResultSet =
-	 * selectByPropStat.getResultSet(); log.debug("CallableStatement : " +
-	 * SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
-	 * 
-	 * createItems(selectByPropResultSet, entitys);
-	 * 
-	 * } catch (SQLException e) { throw new DaoSystemException(e); } finally {
-	 * try { closeQuaetly(selectByPropResultSet, selectByPropStat, conn); }
-	 * catch (Exception e1) { throw new DaoSystemException(e1); } } return
-	 * entitys; }
-	 * 
-	 */
+ 
 	private void createItems(ResultSet selectResultSet, CopyOnWriteArraySet<ShowedItem> entitys)
 			throws SQLException, NoSuchEntityException, DaoSystemException {
 		while (selectResultSet.next()) {
@@ -724,6 +421,7 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 			throws SQLException, NoSuchEntityException, DaoSystemException {
 		ShowedUser user = createUser(selectResultSet);
 		int ent_id = selectResultSet.getInt(ENTITY_ID_COL_NAME);
+		int status = selectResultSet.getInt(ENTITY_STATUS_COL_NAME);
 		List<City> city_list = createCityList(selectResultSet);
 		List<Section> sections_list = createSectionList(selectResultSet);
 		List<String> url_list = createURLList(selectResultSet);
@@ -732,7 +430,7 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 		int [] activ = new int[1];
 		SimpleWorkFactoryImpl work = createWork(selectResultSet, activ);
 		List<Tag> tag_list = createTagList(selectResultSet);
-		Rating rating = null;
+		Rating rating = createReting(selectResultSet);
 		String imgage = createImage(selectResultSet);
 		List<String> img_list = createImgList(ent_id);
 
@@ -740,7 +438,7 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 				selectResultSet.getString(ENTITY_HEADER_COL_NAME),
 				selectResultSet.getString(ENTITY_DESCRIPTION_COL_NAME), selectResultSet.getString(ENTITY_DATE_COL_NAME),
 				user, city_list, sections_list, url_list, map_list, work.getWork(), adress_list, tag_list, rating,
-				imgage, img_list, activ[0]);
+				imgage, img_list, activ[0], status);
 		return item;
 	}
 
@@ -749,52 +447,7 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 		throw new NullPointerException();
 	}
 
-	@SuppressWarnings("resource")
-	private String createPrepareCall(String column_name, String id, String SELECT_BY_PROP_CALL_TO_CALL)
-			throws NoSuchEntityException, DaoSystemException {
-		if (column_name.equals("user")) {
-			SELECT_BY_PROP_CALL_TO_CALL = SELECT_BY_PROP_CALL_TO_CALL.replaceAll("@" + COL_NAME, ENTITY_USER_COL_NAME)
-					.replaceAll("@" + COL_VAL, id).replaceAll("@" + OPERATION, OPERATION);
-		} else if (column_name.equals("tag")) {
-			SELECT_BY_PROP_CALL_TO_CALL = SELECT_BY_PROP_CALL_TO_CALL.replaceAll("@" + COL_NAME, TAG_TAG_ID_COL_NAME)
-					.replaceAll("@" + COL_VAL, id).replaceAll("@" + OPERATION, OPERATION);
-		} else if (column_name.equals("entity.entity_id")) {
-			SELECT_BY_PROP_CALL_TO_CALL = SELECT_BY_PROP_CALL_TO_CALL.replaceAll("@" + COL_NAME, "entity.entity_id")
-					.replaceAll("@" + COL_VAL, id).replaceAll("@" + OPERATION, OPERATION);
-		} else if (column_name.equals("city")) {
-			SELECT_BY_PROP_CALL_TO_CALL = SELECT_BY_PROP_CALL_TO_CALL.replaceAll("@" + COL_NAME, CITY_ID_COL_NAME)
-					.replaceAll("@" + COL_VAL, id).replaceAll("@" + OPERATION, OPERATION);
-		} else if (column_name.equals("date")) {
-			String oper = "' BETWEEN '";
-			Calendar ret = Calendar.getInstance();
-			ret.setTimeInMillis(Long.parseLong(id));
-			Formatter month = new Formatter().format("%1$02d", (1 + ret.get(Calendar.MONTH)));
-			String id1 = "\'\\\\'" + ret.get(Calendar.YEAR) + "" + month + "" + ret.get(Calendar.DATE)
-					+ "000000\\\\' AND \\\\'" + ret.get(Calendar.YEAR) + "" + month + "" + ret.get(Calendar.DATE)
-					+ "235959\\\\'\'";
-			month.close();
-			SELECT_BY_PROP_CALL_TO_CALL = SELECT_BY_PROP_CALL_TO_CALL.replaceAll("@" + COL_NAME, ENTITY_DATE_COL_NAME)
-					.replaceAll("@" + OPERATION, oper).replaceAll("@" + COL_VAL, id1);
-		} else if (column_name.equals("section")) {
-			String oper = "' in '";
-			Calendar ret = Calendar.getInstance();
-			ret.setTimeInMillis(Long.parseLong(id));
-			String id1 = "'(";
-			List<Section> s = sectionDao.getSectionById(new Integer(id)).getAllChilds();
-			int i = s.size();
-			for (Section id0 : s) {
-				id1 += id0.getSectionId();
-				if (--i > 0)
-					id1 += ", ";
-			}
-			id1 += ")'";
-			SELECT_BY_PROP_CALL_TO_CALL = SELECT_BY_PROP_CALL_TO_CALL.replaceAll("@" + COL_NAME, SECTION_IDs_COL_NAME)
-					.replaceAll("@" + OPERATION, oper).replaceAll("@" + COL_VAL, id1);
-		} else
-			throw new NoSuchEntityException("Properties " + column_name + " or value " + id + " not found");
-		return SELECT_BY_PROP_CALL_TO_CALL;
-	}
-
+	 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -862,12 +515,8 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 				|| selectByIdResultSet.getString(MAP_LINK_COL_NAME).equals(""))
 			return map_list;
 		for (String url : selectByIdResultSet.getString(MAP_LINK_COL_NAME).split(";")) {
-			log.error("MAP to from request" + url);
-			if (!url.startsWith(",,"))
-				// map_list.add(new
-				// SimpleMapImpl(selectByIdResultSet.getInt(ENTITY_ID_COL_NAME),
-				// Double.parseDouble(url.split(",")[0]),
-				// Double.parseDouble(url.split(",")[1])));
+			log.trace("MAP to from request" + url);
+			if (!url.startsWith(",,")) 
 
 				map_list.add(new SimpleMapImpl(Integer.parseInt(url.split(",")[2]),
 						Double.parseDouble(url.split(",")[0]), Double.parseDouble(url.split(",")[1])));
@@ -974,11 +623,17 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 			if (dayOfWeek == 0)
 				dayOfWeek = 7;
 			
+			 
+			
 			if(curr.get(Calendar.YEAR )<=Integer.parseInt(dateTo[2]) &&
 					curr.get(Calendar.MONTH)+1 <=Integer.parseInt(dateTo[1]) &&
 					curr.get(Calendar.DAY_OF_MONTH )<=Integer.parseInt(dateTo[0]) &&
 					curr.get(Calendar.HOUR_OF_DAY )<=Integer.parseInt(timeTo[0])&& 
-					curr.get(Calendar.MINUTE )<=Integer.parseInt(timeTo[1])&&
+ 
+							
+									((	curr.get(Calendar.MINUTE )<=Integer.parseInt(timeTo[1]) || (curr.get(Calendar.HOUR_OF_DAY )<Integer.parseInt(timeTo[0])) )) &&
+									
+									
 							(curr.get(Calendar.MONTH )+1)>=month_from&& 
 									dayOfWeek>=day_from&& 
 					
@@ -1019,7 +674,7 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 
 
  
-			
+//			log.error(action);
 			
 			work.addDate(date_from, date_to, month_from, month_to,
 					day_from, day_to, time_from, time_to);
@@ -1070,4 +725,103 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 		log.debug("result " + SECTION_IDs_COL_NAME + " set item " + selectAllResultSet.getString(SECTION_IDs_COL_NAME));
 	}
 
+	@Override
+	public CopyOnWriteArraySet<ShowedItem> executeSearch(String city, String from, String limit, int[] count,
+			String serach) throws NoSuchEntityException, NumberFormatException, DaoSystemException {
+		
+
+		CallableStatement selectAllStat = null;
+		ResultSet selectAllResultSet = null;
+		CopyOnWriteArraySet<ShowedItem> entitys = new CopyOnWriteArraySet<ShowedItem>();
+		StringBuilder CONDITIONS11 = new StringBuilder("");
+		StringBuilder CONDITIONS22 = new StringBuilder("");
+		StringBuilder CONDITIONS33 = new StringBuilder(""); 
+		try {
+			Connection conn = dataSource.getConnection();
+			
+
+			log.error("city = " + city);
+			log.error("from = " + from);
+			log.error("limit = " + limit);
+			log.error("serach = " + serach);
+			
+			if (city != null && !city.equals("") && !city.equals("-1")) {
+
+				if (CONDITIONS11.toString().equals(""))
+					CONDITIONS11.append(" where ");
+				else
+					CONDITIONS11.append(" and ");
+				CONDITIONS11.append(" city.city_id = " + city);
+			}
+			
+			if (CONDITIONS11.toString().equals(""))
+				CONDITIONS11.append(" where ");
+			else
+				CONDITIONS11.append(" and ");
+
+			CONDITIONS11.append(" section.section_view in(1,2,3,4,5,6,7,8,9)");
+		
+			if (limit != null && !limit.equals("")) {
+
+				CONDITIONS22.append(" limit ");
+				if (from != null && !from.equals("") && !from.equals("0")) {
+					CONDITIONS22.append(from + ", ");
+				}
+				CONDITIONS22.append(limit);
+			}
+			if (serach != null && !serach.equals("")) {
+				if (CONDITIONS11.toString().equals(""))
+					CONDITIONS11.append(" where ");
+				else
+					CONDITIONS11.append(" and ");
+
+				serach = serach.trim();
+				CONDITIONS11.append("(header like '%"+serach+"%' or description like '%"+serach+"%')");
+			}
+
+ 
+			int status = 4; 
+			CONDITIONS11.append("and entity.status >=" + status );
+			
+			String SELECT_BY_PROP_CALL_TO_CALL = EXECUTE_SELECT_ALL_CALL; 
+
+			log.info("SQL to Execute : " + SELECT_BY_PROP_CALL_TO_CALL);
+			selectAllStat = conn.prepareCall(SELECT_BY_PROP_CALL_TO_CALL);
+
+			selectAllStat.setString(1, CONDITIONS11.toString()); 
+			selectAllStat.setString(2, CONDITIONS22.toString()); 
+			selectAllStat.setString(3, CONDITIONS33.toString()); 
+			selectAllStat.registerOutParameter(4, java.sql.Types.INTEGER);
+
+			
+
+			log.trace("CONDITIONS11 = " + CONDITIONS11.toString());
+			log.trace("CONDITIONS22 = " + CONDITIONS22.toString());
+			log.trace("CONDITIONS33 = " + CONDITIONS33.toString()); 
+			
+			
+			selectAllStat.execute();
+
+			if(count!=null)
+			count[0] = selectAllStat.getInt(4);
+			selectAllResultSet = selectAllStat.getResultSet();
+			log.trace("CallableStatement : " + SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
+
+			createItems(selectAllResultSet, entitys);
+
+		} catch (SQLException e) {
+			log.error("Error description", e);
+			throw new DaoSystemException(e);
+		} finally {
+			log.debug("Close SELECT_ALL_SQL ResultSet and SELECT_ALL_SQL Statement");
+			try {
+				closeQuaetly(selectAllResultSet, selectAllStat);
+			} catch (Exception e1) {
+				log.error(e1);
+				throw new DaoSystemException(e1);
+			}
+		}
+
+		return entitys;
+	}
 }

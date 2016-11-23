@@ -19,12 +19,15 @@ public class ItemAllController extends RootController {
 	public static Logger log = Logger.getLogger(Thread.currentThread().getStackTrace()[1].getClassName());
 
 	public static final String PAGE_OK = "/jsp/EntityAll.jsp";
+	public static final String PAGE_ADD_OK = "/jsp/item.jsp";
 	public static final String ATTRIBUTE_ITEM_MODEL_TO_VIEW = "items";
 	public static final String ATTRIBUTE_ITEM_COUNT_TO_VIEW = "items_count";
 
 	public static final String PAGE_ERROR = "/jsp/index.jsp";
 	public static final String ATTRIBUTE_ERR_STR = "errorString";
 	public static final String ATTRIBUTE_ERR_CODE = "errorCode";
+
+	public static final  int entityToGet = 10;
  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -52,6 +55,10 @@ public class ItemAllController extends RootController {
 			log.debug("City in attribute " + "city_selected" + " : " + city1 + " "
 					+ request.getAttribute("city_selected"));
 
+			
+
+			
+			
 			String date1 = request.getParameter("date");
 			String section1 = request.getParameter("section");
 			if (section1 != null) {
@@ -63,9 +70,9 @@ public class ItemAllController extends RootController {
 			int page = 0;
 			if (request.getParameter("page") != null) {
 				page = Integer.parseInt(request.getParameter("page"));
-				log.info(">>> Add " + "page" + " to request attribute");
+				log.debug(">>> Add " + "page" + " to request attribute");
 				request.setAttribute("page", page);
-				log.info(">>> " + "page" + " MODEL:" + page);
+				log.debug(">>> " + "page" + " MODEL:" + page);
 
 			}
 
@@ -74,13 +81,12 @@ public class ItemAllController extends RootController {
 			String action = "";
 			if (request.getParameter("action") != null) {
 				action = request.getParameter("action");
-				log.info(">>> Add " + "action" + " to request attribute");
+				log.debug(">>> Add " + "action" + " to request attribute");
 				request.setAttribute("action", action);
-				log.info(">>> " + "action" + " MODEL:" + action);
+				log.debug(">>> " + "action" + " MODEL:" + action);
 
 			}
 
-			int entityToGet = 10;
 			long start = System.currentTimeMillis();
 
 			String sectionView = section1 != null
@@ -88,19 +94,41 @@ public class ItemAllController extends RootController {
 							: " 1, 2, 3, 4, 5, 6, 7, 8, 9"
 					: " 1, 2, 3, 4, 5, 6, 7, 8, 9";
 			int [] count = new int [1];
+			
+			 
+			
+			String search = request.getParameter("search"); 
+			if (search != null && search.length()>0) { 
+				section = -1;
+				itemModel = entityDao.executeSearch(city1, 
+						"" + (page * entityToGet), "" + entityToGet,  count, search);
+				log.debug(">>>  Add " + "head_search" + " to request attribute");
+				request.setAttribute("head_search", "Результати пошуку: \'" + search+"\'");
+				log.debug(">>> " + "head_search" + " MODEL:" + "Результати пошуку: \'" + search+"\'");
+
+			} else{
+				int status = -1;
 			itemModel = entityDao.executeSelectAll(city1, date1, section1, sectionView, user1,
 					"" + (page * entityToGet), "" + entityToGet, tag, action, count);
-
+			}
+			
 			log.info(">>>  Add " + ATTRIBUTE_ITEM_MODEL_TO_VIEW + " to request attribute");
 
 			request.setAttribute(ATTRIBUTE_ITEM_MODEL_TO_VIEW, itemModel);
 			request.setAttribute(ATTRIBUTE_ITEM_COUNT_TO_VIEW, count[0]);
-			log.info(">>> " + ATTRIBUTE_ITEM_MODEL_TO_VIEW + " MODEL:" + itemModel);
+			log.debug(">>> " + ATTRIBUTE_ITEM_MODEL_TO_VIEW + " MODEL:" + itemModel);
 			log.info(">>> " + ATTRIBUTE_ITEM_MODEL_TO_VIEW + " was created in : " + (System.currentTimeMillis() - start)
 					+ "ms");
 
+			if(request.getParameter("next")!=null){
+				getServletContext().getRequestDispatcher(PAGE_ADD_OK).include(request, response);
+				return;
+			}
+			
 			long from = System.currentTimeMillis();
 			addStandartModels(request, section);
+			
+
 			log.info(">>> StandRT MODEL TO WIREW was created in : " + (System.currentTimeMillis() - from) + "ms");
 			log.info(">>> DATABASE SEARCH : " + (System.currentTimeMillis() - start) + "ms");
 

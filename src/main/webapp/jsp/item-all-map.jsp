@@ -39,6 +39,8 @@
 <script type="text/javascript">
 					function codeAddress() { 
 						<c:forEach var="item" items="${items}">  
+
+						<c:if test="${item.getStatus() >=chowedItemStatus || (item.getStatus()>=chowedItemUserCreateStatus && item.getUser().getUserId()==sessionScope.user.getUserId())}"> 
 							<c:if test="${(item.getSections().get(0).getSectionView() < 10) || (item.getSections().get(0).getSectionView() == 10 && section_view==10)}">
 								<c:forEach var="map" items="${item.getMaps()}">  
 										<c:if test="${not empty map}"> 
@@ -46,6 +48,8 @@
 										</c:if>
 								</c:forEach> 
 								</c:if>
+								</c:if>
+								
 						</c:forEach>
 					}
 					window.onload = codeAddress; 

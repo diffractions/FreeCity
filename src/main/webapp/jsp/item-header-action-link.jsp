@@ -15,7 +15,7 @@
 						<%
 					String timresp = "";
 						if (request.getParameterMap().size() != 0) {
-							timresp = "&" + request.getQueryString();
+// 							timresp = "&" + request.getQueryString();
 						}
 						if (request.getParameter("action") != null) {
 							timresp = request.getQueryString();
@@ -23,7 +23,7 @@
 									.replaceAll("action=future", "").replaceAll("action=archive", "");
 						}
  		%> 
-		<span class="post-date"> <i class="fa fa-clock-o fa-fw"></i> <span class="updated">
+		<span class="post-date"> <i class="fa fa-clock-o fa-fw"></i> <span class="updated" style="color: maroon; font-weight: 600;" >
 			<c:if test="${0==item.getActiv()}"><a href="<%@ include file="href-path.jspf"%>list?action=active<%=timresp%>">Активна</a></c:if>
 			<c:if test="${1==item.getActiv()}"><a href="<%@ include file="href-path.jspf"%>list?action=future<%=timresp%>">Запланована подія</a></c:if>
 			<c:if test="${2==item.getActiv()}"><a href="<%@ include file="href-path.jspf"%>list?action=archive<%=timresp%>">Запис в архіві</a></c:if>

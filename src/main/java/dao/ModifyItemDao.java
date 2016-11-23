@@ -19,5 +19,12 @@ public interface ModifyItemDao {
 			String c_adress, String c_contacts, String c_map_link_lat, String c_map_link_lng, String c_city_id,
 			String c_section_id, String c_date_from, String c_date_to, String c_month_from, String c_month_to,
 			String c_days_from, String c_days_to, String c_time_from, String c_time_to) throws DaoSystemException, NoSuchEntityException;
+	
 
+	public void addTagsToItem(String tags, int entityId) throws DaoSystemException, NoSuchEntityException, NumberFormatException ;
+	void deleteTagsById(Integer enti_id) throws DaoSystemException, NoSuchEntityException, NumberFormatException ;
+
+	public void updItemTags(String tag, int entityId) throws DaoSystemException, NoSuchEntityException, NumberFormatException ;
+
+	
 }

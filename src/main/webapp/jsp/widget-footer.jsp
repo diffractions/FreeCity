@@ -4,11 +4,10 @@
 	<div class="container">
 		<div class="row">
 
-			<div class="copyright">&copy; Canvas 2015</div>
+			<div class="copyright">&copy; FreeCity 2016</div>
 			<div class="attribution">
-				Web Design by <a href="http://www.donnyburnside.com"
-					title="Web Design by Donny Burnside" target="_blank">Donny
-					Burnside</a>.
+				Developed by  
+					<a href="mailto:freecityua@gmail.com" title="Develop by Andrii Kozak" target="_blank" >Andrii Kozak</a>
 			</div>
 
 		</div>

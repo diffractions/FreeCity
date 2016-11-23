@@ -6,7 +6,7 @@
 <body>
 
 	<!-- add menu -->
-	<jsp:include page="menu.jsp" />
+	<jsp:include page="site-header.jsp" />
 
 
 

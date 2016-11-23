@@ -8,9 +8,9 @@
 <%@ page import="entity.City"%>
 <%@ page import="entity.Rating"%>
 <%@ page import="entity.Section"%> 
+<%@ page import="entity.Tag"%> 
 <%@ page import="entity.Adress"%>
-<%@ page import="java.util.Calendar"%>
-
+<%@ page import="java.util.Calendar"%> 
 
 
 <form <c:if test="${ empty item}">action="create" </c:if> <c:if test="${not empty item}">action="update?id=${item.getId()}" </c:if> method="post" enctype="multipart/form-data"> <fieldset>
@@ -49,6 +49,25 @@
 		<textarea name="description" rows="10">${item.getDescription()}</textarea>
 		<br><span style=" color: red; ">*</span>Розділ : <br>
 		<jsp:include page="create-item-form-section.jsp" />
+		
+				<br>
+<!-- 		<span style=" color: red; ">*</span> -->
+		 Теги: <br>
+
+		<div class="tooltip"
+			style="width: 100%; height: inherit; border: inherit;">
+			<span class="tooltiptext">Перелічіть теги через кому або виберіть із списку</span> 
+			<div  style="display: flex;">
+			<input style="flex: 1;" type="text"  value="<c:forEach var="tag" items="${item.getTags()}">${tag.getTagName()}, </c:forEach>" name="it-tag" id="it-tag">
+			 <select style="padding: 16px; padding: 1rem;" name="tag-list" id="tag-list" onchange="adddTag()">
+				<option value="0" selected="selected">виберіть теги</option>
+				<c:forEach var="tag" items="${tag_atr}">
+					<option value="${tag.getTagId()}">${tag.getTagName()}</option>
+				</c:forEach>
+			</select>
+			</div>
+		</div>
+ 
 		
 		
 		<br> <span style=" color: red; ">*</span>Місто : <br> <select name="city-id" id="city-id" title="Виберіть місто зі списку, та встановіть позначку на карті">
@@ -253,12 +272,23 @@
 			</div>
 		</c:if>
 
+ 
+						 
+ 
+						 
+						 
+						 
+						 
+						 
+						 
 
 
 
 
 
-<br>
+
+
+		<br>
 
 		<c:if test="${ empty item}">
 			<input type="hidden" value="simple" name="type">
@@ -288,19 +318,37 @@
 $(window) .load( function(e) {
 	 		$('#create-sub').attr('disabled', 'disabled');
  });
+  
+ </script>
+</c:if>
+<script>	
+
+
+
+function loadAdrr() {
+	document.getElementById('adress-link').value= document.getElementById('map-adress-link').value; 
+	chouseButt();
+	}
+	
+	
+
+function adddTag() { 
+	if(($('#it-tag').val().slice($('#it-tag').val().length - 2) == ", ")||($('#it-tag').val().slice($('#it-tag').val().length - 2) == ",")||($('#it-tag').val().slice($('#it-tag').val().length - 2) == ""))
+		$( "#it-tag" ).val($('#it-tag').val() + $( "#tag-list option:selected" ).text() + ", ");
+	else
+		$( "#it-tag" ).val($('#it-tag').val() + ", " + $( "#tag-list option:selected" ).text() + ", " );
+ }
  
- 
-$('#it-head, #adress-link').on('keyup', function() {
+
+function chouseButt() { 
 	if ($('#it-head').val().length==0 || $('#adress-link').val().length==0 )  {
         $('#create-sub').attr('disabled', 'disabled'); 
     } else {
         $('#create-sub').removeAttr('disabled');  
     }
-});
+ }
+ 
 
-function loadAdrr() {
-	document.getElementById('adress-link').value= 	  document.getElementById('map-adress-link').value; 
-	$('#adress-link').trigger('keyup');
-	}
+$('#it-head, #adress-link').on('keyup', function() {chouseButt();});
+
  </script>
-</c:if>
