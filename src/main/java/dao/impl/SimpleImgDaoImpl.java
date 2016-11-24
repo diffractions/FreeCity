@@ -25,8 +25,7 @@ import dao.exceptions.DaoSystemException;
 import dao.exceptions.NoSuchEntityException;
 import entity.Img;
 import entity.impl.SimpleImgImpl;
-
-import utils.EncodeUtils;
+ 
 
 public class SimpleImgDaoImpl implements ImgDao {
 
@@ -104,12 +103,10 @@ public class SimpleImgDaoImpl implements ImgDao {
 		PreparedStatement stat1 = null;
 
 		try {
-			fileName =  getFileName(filePart); 
-			if (fileName != null && !fileName.equals("")) {
-				// prints out some information for debugging
+			fileName = getFileName(filePart);
+			if (fileName != null && !fileName.equals("")) { 
 				log.info("user add phohto : " + filePart.getName() + ", " + filePart.getSize() + ", "
-						+ filePart.getContentType() + ", "
-								+ fileName);
+						+ filePart.getContentType() + ", " + fileName);
 				InputStream inputStream = filePart.getInputStream();
 
 				con = dataSource.getConnection();
@@ -146,7 +143,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close " + SQL + " ResultSet and " + SQL + " Statement");
 			try {
-				closeQuaetly(con, stat, stat1, set);
+				closeQuaetly( stat, stat1, set, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -188,7 +185,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close SQL_SECTION_ADD ResultSet and SQL_SECTION_ADD Statement");
 			try {
-				closeQuaetly(con, stat, set);
+				closeQuaetly(stat, set, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -233,7 +230,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close SQL_SECTION_ADD ResultSet and SQL_SECTION_ADD Statement");
 			try {
-				closeQuaetly(con, stat, set);
+				closeQuaetly(stat, set, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -242,7 +239,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 	}
 
 	private String getFileName(final Part part) throws UnsupportedEncodingException {
- 
+
 		log.trace(new String(part.getHeader("content-disposition")));
 		for (String content : new String(part.getHeader("content-disposition")).split(";")) {
 			if (content.trim().startsWith("filename")) {
@@ -281,7 +278,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close SQL_SECTION_ADD ResultSet and SQL_SECTION_ADD Statement");
 			try {
-				closeQuaetly(con, stat, set);
+				closeQuaetly(stat, set, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -298,7 +295,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 
 		try {
 
-			if (filePart.getSize()>0 ) {
+			if (filePart.getSize() > 0) {
 				// prints out some information for debugging
 				log.info("user upd phohto : " + filePart.getName() + ", " + filePart.getSize() + ", "
 						+ filePart.getContentType());
@@ -323,7 +320,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close " + SQL_UPD_IMG_HEADER_LIST + " ResultSet and " + SQL_UPD_IMG_HEADER_LIST + " Statement");
 			try {
-				closeQuaetly(con, stat);
+				closeQuaetly(stat, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -375,7 +372,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close " + SQL_UPD_IMG_HEADER_LIST + " ResultSet and " + SQL_UPD_IMG_HEADER_LIST + " Statement");
 			try {
-				closeQuaetly(con, stat, stat1, stat0);
+				closeQuaetly(stat, stat1, stat0, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);

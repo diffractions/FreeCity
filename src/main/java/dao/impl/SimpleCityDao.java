@@ -75,7 +75,7 @@ public class SimpleCityDao implements CityDao {
 		} finally {
 			log.debug("Close SQL_SECTION_ADD ResultSet and SQL_SECTION_ADD Statement");
 			try {
-				closeQuaetly(con, stat, set);
+				closeQuaetly(stat, set, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -103,7 +103,7 @@ public class SimpleCityDao implements CityDao {
 		} finally {
 			log.debug("Close SQL_SECTION_ADD ResultSet and SQL_SECTION_ADD Statement");
 			try {
-				closeQuaetly(con, stat, set);
+				closeQuaetly(stat, set, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -116,10 +116,10 @@ public class SimpleCityDao implements CityDao {
 		Statement selectAllStat = null;
 		ResultSet selectAllResultSet = null;
 		CopyOnWriteArrayList<City> cityes = new CopyOnWriteArrayList<City>();
-
+		Connection conn = null;
 		try {
 
-			Connection conn = dataSource.getConnection();
+			conn = dataSource.getConnection();
 			log.debug("SQL to Execute : " + SELECT_ALL_SQL);
 
 			selectAllStat = conn.createStatement();
@@ -140,7 +140,7 @@ public class SimpleCityDao implements CityDao {
 		} finally {
 			log.trace("Close SELECT_ALL_SQL ResultSet and SELECT_ALL_SQL Statement");
 			try {
-				closeQuaetly(selectAllResultSet, selectAllStat);
+				closeQuaetly(selectAllResultSet, selectAllStat, conn);
 			} catch (Exception e1) {
 				log.error("pribt exception: ", e1);
 				throw new DaoSystemException(e1);

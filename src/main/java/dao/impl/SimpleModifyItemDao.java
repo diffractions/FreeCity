@@ -30,6 +30,8 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 	private final static String USER_ID_COL_NAME = "user-id-user";
 	private final static String URL_COL_NAME = "url-link";
 	private final static String CITY_ID_COL_NAME = "city-id";
+	
+	@SuppressWarnings("unused")
 	private final static String IMG_ID_COL_NAME = "img-id";
 	private final static String SECTION_ID_COL_NAME = "section-id";
 	private final static String MAP_LAT_COL_NAME = "map-lat-link";
@@ -139,8 +141,9 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 
 		CallableStatement delByIdStat = null;
 		ResultSet delBuIdResultSet = null;
+		Connection conn = null;
 		try {
-			Connection conn = dataSource.getConnection();
+			conn = dataSource.getConnection();
 
 			log.debug("ID : " + id);
 			String DELETE_ITEM_BY_ID_cal = DELETE_ITEM_BY_ID.replaceAll("@" + ID, id);
@@ -158,7 +161,7 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 		} finally {
 			log.debug("Close SELECT_ALL_SQL ResultSet and SELECT_ALL_SQL Statement");
 			try {
-				closeQuaetly(delBuIdResultSet, delByIdStat);
+				closeQuaetly(delBuIdResultSet, delByIdStat, conn);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -221,7 +224,7 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 		} finally {
 			log.debug("Close SELECT_ALL_SQL ResultSet and SELECT_ALL_SQL Statement");
 			try {
-				closeQuaetly(conn,createItemResultSet, creatItemStat);
+				closeQuaetly(conn,createItemResultSet, creatItemStat, conn);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);

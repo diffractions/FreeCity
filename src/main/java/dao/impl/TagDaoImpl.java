@@ -1,8 +1,7 @@
 package dao.impl;
 
 import static utils.JBDCUtil.closeQuaetly;
-
-import java.io.InputStream;
+ 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -82,7 +81,7 @@ public class TagDaoImpl implements TagDao {
 		} finally {
 			log.trace("Close SELECT_ALL_SQL ResultSet and SELECT_ALL_SQL Statement");
 			try {
-				closeQuaetly(selectAllResultSet, selectAllStat);
+				closeQuaetly(selectAllResultSet, selectAllStat, conn);
 			} catch (Exception e1) {
 				log.error("pribt exception: ", e1);
 				throw new DaoSystemException(e1);
