@@ -57,9 +57,15 @@ public class TagDaoImpl implements TagDao {
 		ResultSet selectAllResultSet = null;
 		CopyOnWriteArraySet<Tag> tags = new CopyOnWriteArraySet<Tag>();
 		Connection conn = null;
+		PreparedStatement prepCyr = null;
 		try {
 
 			conn = dataSource.getConnection();
+			
+
+			prepCyr = conn.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
 			log.debug("SQL to Execute : " + SELECT_ALL_SQL);
 
 			selectAllStat = conn.createStatement();
@@ -81,7 +87,7 @@ public class TagDaoImpl implements TagDao {
 		} finally {
 			log.trace("Close SELECT_ALL_SQL ResultSet and SELECT_ALL_SQL Statement");
 			try {
-				closeQuaetly(selectAllResultSet, selectAllStat, conn);
+				closeQuaetly(prepCyr, selectAllResultSet, selectAllStat, conn);
 			} catch (Exception e1) {
 				log.error("pribt exception: ", e1);
 				throw new DaoSystemException(e1);
@@ -99,8 +105,15 @@ public class TagDaoImpl implements TagDao {
 		Connection con = null;
 		PreparedStatement stat = null;
 		ResultSet tagstSet = null;
+
+		PreparedStatement prepCyr = null;
+		
 		try {
 			con = dataSource.getConnection();
+			
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
 			stat = con.prepareStatement(SELECT_TAG_BY_NAME_SQL);
 			stat.setString(1, tag);
 			tagstSet = stat.executeQuery();
@@ -112,7 +125,7 @@ public class TagDaoImpl implements TagDao {
 		} finally {
 			log.debug("Close SQL_SECTION_ADD ResultSet and SQL_SECTION_ADD Statement");
 			try {
-				closeQuaetly(con, stat, tagstSet);
+				closeQuaetly(prepCyr, stat, tagstSet, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -126,8 +139,13 @@ public class TagDaoImpl implements TagDao {
 		Connection con = null;
 		PreparedStatement stat = null;
 		ResultSet tagstSet = null;
+		PreparedStatement prepCyr = null;
 		try {
 			con = dataSource.getConnection();
+			 
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
 			stat = con.prepareStatement(CREATE_TAG, Statement.RETURN_GENERATED_KEYS);
 			stat.setString(1, tag);
 			int row = stat.executeUpdate();
@@ -143,7 +161,7 @@ public class TagDaoImpl implements TagDao {
 		} finally {
 			log.debug("Close SQL_SECTION_ADD ResultSet and SQL_SECTION_ADD Statement");
 			try {
-				closeQuaetly(con, stat, tagstSet);
+				closeQuaetly(prepCyr, stat, tagstSet,con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);

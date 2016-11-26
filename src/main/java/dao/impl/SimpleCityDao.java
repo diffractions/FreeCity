@@ -162,8 +162,13 @@ public class SimpleCityDao implements CityDao {
 	public int addCity(String cityName) throws DaoSystemException {
 		Connection con = null;
 		PreparedStatement stat = null;
+
+		PreparedStatement prepCyr = null;
 		try {
 			con = dataSource.getConnection();
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
 			stat = con.prepareStatement(ADD_CITY_SQL);
 			stat.setString(1, cityName);
 			int addedCount = stat.executeUpdate();
@@ -174,7 +179,7 @@ public class SimpleCityDao implements CityDao {
 		} finally {
 			log.debug("Close ADD_CITY_SQL ResultSet and ADD_CITY_SQL Statement");
 			try {
-				closeQuaetly(con, stat);
+				closeQuaetly(prepCyr, stat,con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -184,13 +189,13 @@ public class SimpleCityDao implements CityDao {
 	}
 
 	@Override
-	public int delCity(String parameter) throws DaoSystemException {
+	public int delCity(String cityId) throws DaoSystemException {
 		Connection con = null;
 		PreparedStatement stat = null;
 		try {
 			con = dataSource.getConnection();
 			stat = con.prepareStatement(SQL_CITY_DEL);
-			stat.setInt(1, Integer.parseInt(parameter));
+			stat.setInt(1, Integer.parseInt(cityId));
 			int addedCount = stat.executeUpdate();
 			return addedCount;
 		} catch (SQLException e) {

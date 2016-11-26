@@ -4,6 +4,7 @@ import static utils.JBDCUtil.closeQuaetly;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -316,9 +317,12 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 			throws DaoSystemException, NoSuchEntityException, NumberFormatException { 
 		CallableStatement addTagStat = null; 
 		Connection conn = null;
+		PreparedStatement prepCyr = null;
 		try {
 
 			conn = dataSource.getConnection();
+			prepCyr = conn.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
 			for (String tag : tags.split(",")) {
 				String trimTag = tag.trim();
 				if (trimTag.length() > 0) {
@@ -343,7 +347,7 @@ public class SimpleModifyItemDao implements ModifyItemDao {
 			throw new DaoSystemException(e);
 		} finally {
 			try {
-				closeQuaetly(addTagStat, conn);
+				closeQuaetly(addTagStat, prepCyr, conn);
 			} catch (Exception e1) {
 				throw new DaoSystemException(e1);
 			}

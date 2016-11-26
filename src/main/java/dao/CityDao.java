@@ -15,5 +15,5 @@ public interface CityDao {
 
 	public int addCity(String cityName) throws DaoSystemException;
 
-	public int delCity(String parameter) throws DaoSystemException;
+	public int delCity(String cityId) throws DaoSystemException;
 }

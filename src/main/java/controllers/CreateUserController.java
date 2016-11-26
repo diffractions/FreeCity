@@ -53,8 +53,8 @@ public class CreateUserController extends RootController {
 		try {
 
 			login = request.getParameter(PARAM_USER_LOGIN);
-			String first_name = new String(request.getParameter(PARAM_USER_FIRST_NAME).getBytes(EncodeUtils.CP1251_CODE), EncodeUtils.UTF_8_CODE);
-			String last_name = new String(request.getParameter(PARAM_USER_LAST_NAME).getBytes(EncodeUtils.CP1251_CODE), EncodeUtils.UTF_8_CODE);
+			String first_name = new String(request.getParameter(PARAM_USER_FIRST_NAME).getBytes(EncodeUtils.ISO_8859_1), EncodeUtils.UTF_8_CODE);
+			String last_name = new String(request.getParameter(PARAM_USER_LAST_NAME).getBytes(EncodeUtils.ISO_8859_1), EncodeUtils.UTF_8_CODE);
 			String email = request.getParameter(PARAM_USER_EMAIL);
 			String password = request.getParameter(PARAM_USER_PASSWORD);
 			ShowedUser user = null;

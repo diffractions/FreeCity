@@ -55,9 +55,17 @@ public class SimpleUserDao implements UserDao {
 			throws DaoSystemException {
 		Connection con = null;
 		PreparedStatement stat = null;
+		PreparedStatement prepCyr = null;
+		
 		try {
 			con = dataSource.getConnection();
+			
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
 			stat = con.prepareStatement(ADD_USER_SQL_WITH_LATNAME);
+
+			log.info("Crete new user with - first name:" + first_name+", last name: "+last_name+", email: " +email+", login:"+login+", password:"+ password);
 			stat.setString(1, first_name);
 			stat.setString(2, last_name);
 			stat.setString(3, email);
@@ -77,7 +85,7 @@ public class SimpleUserDao implements UserDao {
 		} finally {
 			log.debug("Close ADD_CITY_SQL ResultSet and ADD_CITY_SQL Statement");
 			try {
-				closeQuaetly(con, stat);
+				closeQuaetly(prepCyr, stat, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -91,9 +99,16 @@ public class SimpleUserDao implements UserDao {
 			throws DaoSystemException {
 		Connection con = null;
 		PreparedStatement stat = null;
+		PreparedStatement prepCyr = null;
 		try {
 			con = dataSource.getConnection();
+			
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
 			stat = con.prepareStatement(ADD_USER_SQL);
+
+			log.info("Crete new user with - first name:" + first_name+", email: " +email+", login:"+login+", password:"+ password);
 			stat.setString(1, first_name);
 			stat.setString(2, email);
 			stat.setString(3, login);
@@ -112,7 +127,7 @@ public class SimpleUserDao implements UserDao {
 		} finally {
 			log.debug("Close ADD_CITY_SQL ResultSet and ADD_CITY_SQL Statement");
 			try {
-				closeQuaetly(con, stat);
+				closeQuaetly(prepCyr, stat, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -126,8 +141,15 @@ public class SimpleUserDao implements UserDao {
 		Connection con = null;
 		PreparedStatement stat = null;
 		ResultSet rset = null;
+
+		PreparedStatement prepCyr = null;
+		
 		try {
 			con = dataSource.getConnection();
+			
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
 			stat = con.prepareStatement(GET_USER_SQL);
 			stat.setString(1, login);
 			stat.setString(2, password);
@@ -146,7 +168,7 @@ public class SimpleUserDao implements UserDao {
 		} finally {
 			log.debug("Close ADD_CITY_SQL ResultSet and ADD_CITY_SQL Statement");
 			try {
-				closeQuaetly(con, stat, rset);
+				closeQuaetly(prepCyr, stat, rset, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);

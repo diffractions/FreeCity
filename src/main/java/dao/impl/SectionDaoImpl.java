@@ -60,6 +60,7 @@ public class SectionDaoImpl implements SectionDao {
 			throws DaoSystemException, NoSuchEntityException {
 		Connection con = null;
 		PreparedStatement stat = null;
+		PreparedStatement prepCyr = null;
 		int updatedCount = -1;
 
 		log.info("Call update section, sectionId: " + sectionId+", sectionName: " + ", parentSectionId : " + parentSectionId);
@@ -68,6 +69,8 @@ public class SectionDaoImpl implements SectionDao {
 			log.debug("getConnection for " + SQL_SECTION_UPDATE);
 			con = dataSource.getConnection();
 			
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
 
 			log.debug("prepareStatement for " + SQL_SECTION_UPDATE);
 			stat = con.prepareStatement(SQL_SECTION_UPDATE);
@@ -87,7 +90,7 @@ public class SectionDaoImpl implements SectionDao {
 			throw new DaoSystemException(e);
 		} finally { 
 			try {
-				closeQuaetly(stat, con);
+				closeQuaetly(prepCyr, stat, con);
 			} catch (Exception e1) {
 				log.error("Error description", e1);
 				throw new DaoSystemException(e1);
@@ -100,11 +103,16 @@ public class SectionDaoImpl implements SectionDao {
 	private void updateSectionList() throws DaoSystemException {
 		Connection con = null;
 		Statement stat = null;
+		PreparedStatement prepCyr = null;
 		log.info("Call update section list");
 		try {
 
 			log.debug("getConnection for " + SQL_SELECT_ALL_SECTIONS);
 			con = dataSource.getConnection();
+			
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
 			
 			log.debug("createStatement for " + SQL_SELECT_ALL_SECTIONS);
 			stat = con.createStatement();
@@ -154,7 +162,7 @@ public class SectionDaoImpl implements SectionDao {
 			});
  
 			try {
-				closeQuaetly(stat, con);
+				closeQuaetly(prepCyr, stat, con);
 			} catch (Exception e1) {
 				log.error("Error description" ,e1);
 				throw new DaoSystemException(e1);
@@ -207,11 +215,16 @@ public class SectionDaoImpl implements SectionDao {
 	public int addSection(String sectionName, String parentSectionId, String view) throws DaoSystemException {
 		Connection con = null;
 		PreparedStatement stat = null;
+
+		PreparedStatement prepCyr = null;
 		log.info("Call addSection sectionName: "+sectionName+", : " + parentSectionId+", view: " +view);
 		try {
 
 			log.debug("getConnection for " + SQL_SECTION_ADD);
 			con = dataSource.getConnection();
+			
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
 			
 			log.debug("prepareStatement for " + SQL_SECTION_ADD);
 			stat = con.prepareStatement(SQL_SECTION_ADD);
@@ -228,7 +241,7 @@ public class SectionDaoImpl implements SectionDao {
 			throw new DaoSystemException(e);
 		} finally { 
 			try {
-				closeQuaetly(stat, con);
+				closeQuaetly(prepCyr, stat, con);
 			} catch (Exception e1) {
 				log.error("Error description", e1);
 				throw new DaoSystemException(e1);
@@ -243,11 +256,17 @@ public class SectionDaoImpl implements SectionDao {
 		Connection con = null;
 		PreparedStatement stat = null;
 
+		PreparedStatement prepCyr = null;
+		
 		log.info("Call delSection: "+trim);
 		try {
 			log.debug("getConnection for " + SQL_SECTION_DEL);
 			con = dataSource.getConnection();
 
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
+			
 			log.debug("prepareStatement for " + SQL_SECTION_DEL);
 			stat = con.prepareStatement(SQL_SECTION_DEL);
 			stat.setInt(1, Integer.parseInt(trim));
@@ -261,7 +280,7 @@ public class SectionDaoImpl implements SectionDao {
 			throw new DaoSystemException(e);
 		} finally { 
 			try {
-				closeQuaetly(con, stat);
+				closeQuaetly(prepCyr, con, stat);
 			} catch (Exception e1) {
 				log.error("Error description", e1);
 				throw new DaoSystemException(e1);

@@ -102,6 +102,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		String fileName = null;
 		PreparedStatement stat1 = null;
 
+		PreparedStatement prepCyr = null;
 		try {
 			fileName = getFileName(filePart);
 			if (fileName != null && !fileName.equals("")) { 
@@ -110,6 +111,10 @@ public class SimpleImgDaoImpl implements ImgDao {
 				InputStream inputStream = filePart.getInputStream();
 
 				con = dataSource.getConnection();
+				
+				prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+				prepCyr.executeQuery();
+				
 				stat = con.prepareStatement(SQL_ADD_IMG, Statement.RETURN_GENERATED_KEYS);
 				stat.setBlob(1, inputStream);
 
@@ -143,7 +148,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close " + SQL + " ResultSet and " + SQL + " Statement");
 			try {
-				closeQuaetly( stat, stat1, set, con);
+				closeQuaetly( prepCyr,stat, stat1, set, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -158,9 +163,15 @@ public class SimpleImgDaoImpl implements ImgDao {
 		PreparedStatement stat = null;
 		ResultSet set = null;
 
+		PreparedStatement prepCyr = null;
 		try {
 
 			con = dataSource.getConnection();
+			
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
+			
 			stat = con.prepareStatement(SQL_GET_IMG_BY_ID);
 			stat.setInt(1, imageId);
 
@@ -185,7 +196,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close SQL_SECTION_ADD ResultSet and SQL_SECTION_ADD Statement");
 			try {
-				closeQuaetly(stat, set, con);
+				closeQuaetly(prepCyr, stat, set, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -199,10 +210,15 @@ public class SimpleImgDaoImpl implements ImgDao {
 		Connection con = null;
 		PreparedStatement stat = null;
 		ResultSet set = null;
-
+		PreparedStatement prepCyr = null;
 		try {
 
 			con = dataSource.getConnection();
+			
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
+			
 			stat = con.prepareStatement(SQL_GET_IMG_BY_NAME);
 			stat.setString(1, imageName);
 
@@ -230,7 +246,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close SQL_SECTION_ADD ResultSet and SQL_SECTION_ADD Statement");
 			try {
-				closeQuaetly(stat, set, con);
+				closeQuaetly(prepCyr, stat, set, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -256,9 +272,15 @@ public class SimpleImgDaoImpl implements ImgDao {
 		PreparedStatement stat = null;
 		ResultSet set = null;
 
+		PreparedStatement prepCyr = null;
+		
 		try {
 
 			con = dataSource.getConnection();
+			
+			prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+			prepCyr.executeQuery();
+			
 			stat = con.prepareStatement(SQL_GET_IMG_LIST_BY_ENTITY);
 			stat.setInt(1, intityId);
 			log.trace("SQL to EXUQUTE: " + SQL_GET_IMG_LIST_BY_ENTITY);
@@ -278,7 +300,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close SQL_SECTION_ADD ResultSet and SQL_SECTION_ADD Statement");
 			try {
-				closeQuaetly(stat, set, con);
+				closeQuaetly(prepCyr, stat, set, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);
@@ -292,7 +314,8 @@ public class SimpleImgDaoImpl implements ImgDao {
 
 		Connection con = null;
 		PreparedStatement stat = null;
-
+		PreparedStatement prepCyr = null;
+		
 		try {
 
 			if (filePart.getSize() > 0) {
@@ -302,6 +325,11 @@ public class SimpleImgDaoImpl implements ImgDao {
 				InputStream inputStream = filePart.getInputStream();
 
 				con = dataSource.getConnection();
+				
+				prepCyr = con.prepareStatement("SET NAMES utf8mb4");
+				prepCyr.executeQuery();
+				
+				
 				stat = con.prepareStatement(SQL_UPD_IMG_HEADER_LIST);
 				stat.setBlob(1, inputStream);
 				stat.setString(2, getFileName(filePart));
@@ -320,7 +348,7 @@ public class SimpleImgDaoImpl implements ImgDao {
 		} finally {
 			log.debug("Close " + SQL_UPD_IMG_HEADER_LIST + " ResultSet and " + SQL_UPD_IMG_HEADER_LIST + " Statement");
 			try {
-				closeQuaetly(stat, con);
+				closeQuaetly(prepCyr, stat, con);
 			} catch (Exception e1) {
 				log.error(e1);
 				throw new DaoSystemException(e1);

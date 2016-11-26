@@ -110,7 +110,7 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 
 	@SuppressWarnings("unused")
 	private final static String ID = "ID";
-	private final static String SELECT_ALL_CALL = "{call selectAll()}";
+//	private final static String SELECT_ALL_CALL = "{call selectAll()}";
 	private final static String SELECT_BY_ID_CALL = "{call selectById(?)}";
 	@SuppressWarnings("unused")
 	private final static String COL_NAME = "column_name ";
@@ -373,38 +373,38 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 		}
 	}
 
-	@Override
-	public CopyOnWriteArraySet<ShowedItem> selectAll()
-			throws DaoSystemException, NoSuchEntityException, NumberFormatException {
-		CallableStatement selectAllStat = null;
-		ResultSet selectAllResultSet = null;
-		CopyOnWriteArraySet<ShowedItem> entitys = new CopyOnWriteArraySet<ShowedItem>();
-		Connection conn = null;
-		try {
-			conn = dataSource.getConnection();
-
-			log.info("SQL to Execute : " + SELECT_ALL_CALL);
-			selectAllStat = conn.prepareCall(SELECT_ALL_CALL);
-			selectAllStat.execute();
-			selectAllResultSet = selectAllStat.getResultSet();
-			log.debug("CallableStatement : " + SELECT_ALL_CALL + " was execute!");
-
-			createItems(selectAllResultSet, entitys);
-
-		} catch (SQLException e) {
-			log.error("Error description", e);
-			throw new DaoSystemException(e);
-		} finally {
-			try {
-				closeQuaetly(selectAllResultSet, selectAllStat, conn);
-			} catch (Exception e1) {
-				log.error("Error description", e1);
-				throw new DaoSystemException(e1);
-			}
-		}
-
-		return entitys;
-	}
+//	@Override
+//	public CopyOnWriteArraySet<ShowedItem> selectAll()
+//			throws DaoSystemException, NoSuchEntityException, NumberFormatException {
+//		CallableStatement selectAllStat = null;
+//		ResultSet selectAllResultSet = null;
+//		CopyOnWriteArraySet<ShowedItem> entitys = new CopyOnWriteArraySet<ShowedItem>();
+//		Connection conn = null;
+//		try {
+//			conn = dataSource.getConnection();
+//
+//			log.info("SQL to Execute : " + SELECT_ALL_CALL);
+//			selectAllStat = conn.prepareCall(SELECT_ALL_CALL);
+//			selectAllStat.execute();
+//			selectAllResultSet = selectAllStat.getResultSet();
+//			log.debug("CallableStatement : " + SELECT_ALL_CALL + " was execute!");
+//
+//			createItems(selectAllResultSet, entitys);
+//
+//		} catch (SQLException e) {
+//			log.error("Error description", e);
+//			throw new DaoSystemException(e);
+//		} finally {
+//			try {
+//				closeQuaetly(selectAllResultSet, selectAllStat, conn);
+//			} catch (Exception e1) {
+//				log.error("Error description", e1);
+//				throw new DaoSystemException(e1);
+//			}
+//		}
+//
+//		return entitys;
+//	}
 
 	private void createItems(ResultSet selectResultSet, CopyOnWriteArraySet<ShowedItem> entitys)
 			throws SQLException, NoSuchEntityException, DaoSystemException {
@@ -741,20 +741,20 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 					CONDITIONS11.append(" and ");
 
 				serach = serach.trim();
-				CONDITIONS11.append("(header like '%" + serach + "%' or description like '%" + serach + "%')");
+				CONDITIONS11.append("(header like '%" + serach + "%' or description like '%" + serach + "%')"); 
 			}
 
 			int status = 4;
 			CONDITIONS11.append("and entity.status >=" + status);
-
+ 
 			String SELECT_BY_PROP_CALL_TO_CALL = EXECUTE_SELECT_ALL_CALL;
 
 			log.info("SQL to Execute : " + SELECT_BY_PROP_CALL_TO_CALL);
 			selectAllStat = conn.prepareCall(SELECT_BY_PROP_CALL_TO_CALL);
 
-			selectAllStat.setString(1, CONDITIONS11.toString());
-			selectAllStat.setString(2, CONDITIONS22.toString());
-			selectAllStat.setString(3, CONDITIONS33.toString());
+			selectAllStat.setNString(1, CONDITIONS11.toString());
+			selectAllStat.setNString(2, CONDITIONS22.toString());
+			selectAllStat.setNString(3, CONDITIONS33.toString());
 			selectAllStat.registerOutParameter(4, java.sql.Types.INTEGER);
 
 			log.trace("CONDITIONS11 = " + CONDITIONS11.toString());
@@ -765,10 +765,13 @@ public class ShowedItemDAOJDBCimpl implements ShowedItemDao {
 
 			if (count != null)
 				count[0] = selectAllStat.getInt(4);
+			
 			selectAllResultSet = selectAllStat.getResultSet();
 			log.trace("CallableStatement : " + SELECT_BY_PROP_CALL_TO_CALL + " was execute!");
 
-			createItems(selectAllResultSet, entitys);
+			if (count[0] > 0) { 
+				createItems(selectAllResultSet, entitys);
+			}
 
 		} catch (SQLException e) {
 			log.error("Error description", e);

@@ -12,17 +12,17 @@
 
 
 
-<!-- <div class="search-widget widget"> -->
-<!-- 	<form class="widget-form" action="list" method="get" role="search"> -->
-<!-- 		<label> <span class="screen-reader-text">Search this -->
-<!-- 				website:</span> <input type="search" class="search-field" -->
-<%-- 			placeholder="Search &hellip;" value="<%= request.getParameter("search")==null?"": request.getParameter("search") %>" name="search" title="Search" /> --%>
-<!-- 		</label> -->
-<!-- 		<button> -->
-<!-- 			<i class="fa fa-search"></i> -->
-<!-- 		</button> -->
-<!-- 	</form> -->
-<!-- </div> -->
+<div class="search-widget widget">
+	<form class="widget-form" action="list" method="get" role="search">
+		<label> <span class="screen-reader-text">Search this
+				website:</span> <input type="search" class="search-field"
+			placeholder="Search &hellip;" value="<%= request.getParameter("search")==null?"": request.getParameter("search") %>" name="search" title="Search" />
+		</label>
+		<button>
+			<i class="fa fa-search"></i>
+		</button>
+	</form>
+</div>
 <!-- .search.widget -->
 
 

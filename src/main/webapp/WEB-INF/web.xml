@@ -78,14 +78,14 @@
     <servlet-name>AdminController</servlet-name>
     <url-pattern>/admin</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <servlet-name>CreateUserController</servlet-name>
-    <servlet-class>controllers.CreateUserController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>CreateUserController</servlet-name>
-    <url-pattern>/user</url-pattern>
-  </servlet-mapping>
+<!--   <servlet> -->
+<!--     <servlet-name>CreateUserController</servlet-name> -->
+<!--     <servlet-class>controllers.CreateUserController</servlet-class> -->
+<!--   </servlet> -->
+<!--   <servlet-mapping> -->
+<!--     <servlet-name>CreateUserController</servlet-name> -->
+<!--     <url-pattern>/user</url-pattern> -->
+<!--   </servlet-mapping> -->
   <servlet>
     <servlet-name>LoginController</servlet-name>
     <servlet-class>controllers.LoginController</servlet-class>

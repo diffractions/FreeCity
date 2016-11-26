@@ -103,14 +103,7 @@ public class CreateItemController extends RootController {
 				int city = -1;
 				int entityId = -1;
 				if (request.getParameter(PARAM_TYPE).equalsIgnoreCase(PARAM_VALUE_TYPE_SIMPLE)) {
-
-
-//					log.error("-----null----->" + new String(request.getParameter(PARAM_HEADER)));
-//					log.error("-----cp1251--->" + new String(request.getParameter(PARAM_HEADER).getBytes(EncodeUtils.CP1251_CODE), EncodeUtils.UTF_8_CODE));
-//					log.error("-----UTF-8---->" + new String(request.getParameter(PARAM_HEADER).getBytes(EncodeUtils.UTF_8_CODE), EncodeUtils.UTF_8_CODE));
-//					log.error("---iso-8859--1>" + new String(request.getParameter(PARAM_HEADER).getBytes("iso-8859-1"), EncodeUtils.UTF_8_CODE));
-//					log.error("-windows-1251->" + new String(request.getParameter(PARAM_HEADER).getBytes("windows-1251"), EncodeUtils.UTF_8_CODE));
-//					log.error("---- utf-16--->" + new String(request.getParameter(PARAM_HEADER).getBytes(" utf-16"), EncodeUtils.UTF_8_CODE));
+ 
 					
 					
 					String header = new String(request.getParameter(PARAM_HEADER).getBytes(EncodeUtils.ISO_8859_1), EncodeUtils.UTF_8_CODE);
